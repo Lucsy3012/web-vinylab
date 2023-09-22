@@ -1,0 +1,58 @@
+@import "../variables";
+
+// Custom Properties
+:root {
+
+  // Regular color
+  --site-color:               @color-black;
+  --site-color-90:            fade(@color-black, 90);
+  --site-color-75:            fade(@color-black, 75);
+  --site-color-66:            fade(@color-black, 66);
+  --site-color-50:            fade(@color-black, 50);
+  --site-color-33:            fade(@color-black, 33);
+  --site-color-25:            fade(@color-black, 25);
+  --site-color-10:            fade(@color-black, 10);
+  --site-color-hover:         lighten(@color-black, 5%);
+  --site-color-active:        lighten(@color-black, 10%);
+
+  // Fade color
+  --site-color-fade:               @color-gray;
+  --site-color-fade-90:            fade(@color-gray, 90);
+  --site-color-fade-75:            fade(@color-gray, 75);
+  --site-color-fade-66:            fade(@color-gray, 66);
+  --site-color-fade-50:            fade(@color-gray, 50);
+  --site-color-fade-33:            fade(@color-gray, 33);
+  --site-color-fade-25:            fade(@color-gray, 25);
+  --site-color-fade-10:            fade(@color-gray, 10);
+  --site-color-fade-hover:         lighten(@color-gray, 5%);
+  --site-color-fade-active:        lighten(@color-gray, 10%);
+
+  // Contrast color
+  --site-contrast:            @color-white;
+  --site-contrast-90:         fade(@color-white, 90);
+  --site-contrast-75:         fade(@color-white, 75);
+  --site-contrast-66:         fade(@color-white, 66);
+  --site-contrast-50:         fade(@color-white, 50);
+  --site-contrast-33:         fade(@color-white, 33);
+  --site-contrast-25:         fade(@color-white, 25);
+  --site-contrast-10:         fade(@color-white, 10);
+  --site-contrast-hover:      darken(@color-white, 5%);
+  --site-contrast-active:     darken(@color-white, 10%);
+
+  // Accent color
+  --site-accent:            @color-accent;
+  --site-accent-90:         fade(@color-accent, 90);
+  --site-accent-75:         fade(@color-accent, 75);
+  --site-accent-66:         fade(@color-accent, 66);
+  --site-accent-50:         fade(@color-accent, 50);
+  --site-accent-33:         fade(@color-accent, 33);
+  --site-accent-25:         fade(@color-accent, 25);
+  --site-accent-10:         fade(@color-accent, 10);
+  --site-accent-hover:      darken(@color-accent, 3.3%);
+  --site-accent-active:     darken(@color-accent, 7.5%);
+
+  // Links (Default)
+  --link-color:             var(--site-color, @color-black);
+  --link-color-hover:       var(--site-accent, @color-accent);
+  --link-color-active:      var(--site-accent-active, darken(@color-accent, 7.5%));
+}

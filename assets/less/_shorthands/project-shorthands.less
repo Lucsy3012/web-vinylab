@@ -1,0 +1,66 @@
+@import "../variables";
+
+// Text
+.--indented       { letter-spacing: 0.03em; }
+.--condensed      { letter-spacing: -0.03em; }
+.--eyebrow        { letter-spacing: 0.25em; text-transform: uppercase; }
+.--line-height-2  { line-height: 2; }
+.--rounded        { border-radius: 6px; }
+
+// Site Colors
+.--site-color    { color: var(--site-color, @color-black); }
+.--site-color-75 { color: var(--site-color-75, @color-black-75); }
+.--site-color-66 { color: var(--site-color-66, @color-black-66); }
+.--site-color-50 { color: var(--site-color-50, @color-black-50); }
+.--site-color-33 { color: var(--site-color-33, @color-black-33); }
+.--site-color-25 { color: var(--site-color-25, @color-black-25); }
+.--site-color-10 { color: var(--site-color-10, @color-black-10); }
+
+// Site Colors
+.--site-color-fade    { color: var(--site-color-fade, @color-gray); }
+.--site-color-fade-75 { color: var(--site-color-fade-75, @color-gray-75); }
+.--site-color-fade-66 { color: var(--site-color-fade-66, @color-gray-66); }
+.--site-color-fade-50 { color: var(--site-color-fade-50, @color-gray-50); }
+.--site-color-fade-33 { color: var(--site-color-fade-33, @color-gray-33); }
+.--site-color-fade-25 { color: var(--site-color-fade-25, @color-gray-25); }
+.--site-color-fade-10 { color: var(--site-color-fade-10, @color-gray-10); }
+
+// Site Contrast
+.--site-contrast    { color: var(--site-contrast, @color-white); }
+.--site-contrast-75 { color: var(--site-contrast-75, @color-white-75); }
+.--site-contrast-66 { color: var(--site-contrast-66, @color-white-66); }
+.--site-contrast-50 { color: var(--site-contrast-50, @color-white-50); }
+.--site-contrast-33 { color: var(--site-contrast-33, @color-white-33); }
+.--site-contrast-25 { color: var(--site-contrast-25, @color-white-25); }
+.--site-contrast-10 { color: var(--site-contrast-10, @color-white-10); }
+
+// Accent Colors
+.--site-accent    { color: var(--site-accent, @color-accent); }
+.--site-accent-75 { color: var(--site-accent-75, @color-accent-75); }
+.--site-accent-66 { color: var(--site-accent-66, @color-accent-66); }
+.--site-accent-50 { color: var(--site-accent-50, @color-accent-50); }
+.--site-accent-33 { color: var(--site-accent-33, @color-accent-33); }
+.--site-accent-25 { color: var(--site-accent-25, @color-accent-25); }
+.--site-accent-10 { color: var(--site-accent-10, @color-accent-10); }
+
+
+// Background Colors
+.--bg--site-color           { background-color: var(--site-color, @color-black); }
+.--bg--site-fade            { background-color: var(--site-color-fade, @color-gray); }
+.--bg--site-contrast        { background-color: var(--site-contrast, @color-white); }
+.--bg--site-accent          { background-color: var(--site-accent, @color-accent); }
+.--bg--site-pastel-accent   { background-color: var(--site-pastel-accent, @color-pastel-accent); }
+
+
+// Transition
+.transit {
+  transition: var(--transition-property, all) var(--transition-duration, .2s) var(--transition-timing-function, @bezier-pull);
+  transition-delay: var(--transition-delay, 0s);
+  will-change: var(--transition-property, all);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    --transition-duration: 0s !important;
+  }
+}

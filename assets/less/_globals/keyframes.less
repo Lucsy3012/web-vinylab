@@ -1,0 +1,71 @@
+@import (reference) "../global";
+
+.animate {
+  animation: var(--animation-name, appearFromTop) 1.50s @bezier-push;
+  animation-fill-mode: both;
+  animation-delay: var(--animation-delay, 0.3s);
+  animation-duration: var(--animation-duration, 1.5s);
+  animation-play-state: var(--animation-play-state);
+}
+
+.appearFromTopSimple {
+  --animation-name: appearFromTopSimple;
+}
+.appearFromBottomSimple {
+  --animation-name: appearFromBottomSimple;
+}
+
+.appearFromTop {
+  --animation-name: appearFromTop;
+}
+
+.appearFromBottomTransform {
+  --animation-name: appearFromBottomTransform;
+}
+.headlineAppearFromBottom {
+  --animation-name: headlineAppearFromBottom;
+  --animation-duration: 1.75s;
+  --animation-delay: 0s;
+}
+.headlineAppearFromBottom2 {
+  --animation-name: headlineAppearFromBottom2;
+  --animation-duration: 1.65s;
+  --animation-delay: 0.15s;
+}
+.headlineAppearFromTop {
+  --animation-name: headlineAppearFromTop;
+}
+
+@keyframes appearFromTopSimple {
+  0%    { transform: translateY(-40px); opacity: 0; }
+  100%  { transform: translateY(0); opacity: 1; }
+}
+@keyframes appearFromBottomSimple {
+  0%    { transform: translateY(40px); opacity: 0; }
+  100%  { transform: translateY(0); opacity: 1; }
+}
+@keyframes appearFromTop {
+  0%    { transform: translateY(-2.5vh); clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); opacity: 0; }
+  100%  { transform: translateY(0); clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); opacity: 1; }
+}
+@keyframes appearFromBottomTransform {
+  0%    { transform: translateY(5vh); opacity: 0; }
+  25%   { opacity: 0; }
+  100%  { transform: translateY(0); opacity: 1; }
+}
+@keyframes headlineAppearFromBottom {
+  0%    { transform: translateY(100%); clip-path: polygon(0 -100%, 100% -100%, 100% 0%, 0% 0%); }
+  100%  { transform: translateY(0); clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
+}
+@keyframes headlineAppearFromBottom2 {
+  0%    { transform: translateY(120%); clip-path: polygon(0 -125%, 125% -125%, 125% 0%, 0% 0%); opacity: 0; }
+  100%  { transform: translateY(0); clip-path: polygon(0 0, 125% 0, 125% 125%, 0% 125%); opacity: 1; }
+}
+@keyframes headlineAppearFromTop {
+  0%    { transform: translateY(0%); clip-path: polygon(0 -100%, 100% -100%, 100% 0%, 0% 0%); }
+  100%  { transform: translateY(100%); clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) ; }
+}
+@keyframes headlineAppearFromTop100 {
+  0%    { transform: translateY(-100%); clip-path: polygon(0 -100%, 100% -100%, 100% 0%, 0% 0%); }
+  100%  { transform: translateY(0%); clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%) ; }
+}

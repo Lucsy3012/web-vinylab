@@ -1,0 +1,187 @@
+/*
+
+Definition of shorthands
+------------------------------
+Shorthands define a single CSS value of a CSS property as a reusable class.
+The name of the class is explicit; it explains what it does.
+Shorthands don't have options to be modified.
+Shorthands work great with properties that have only keywords as values.
+
+* Shorthands should not be used within CSS, only in HTML
+* Shorthands should explain themselves
+* Shorthands should not be able to be modified
+* Shorthands should be globally accessible
+* Shorthands should be self-sufficient
+* Shorthands should contain browser prefixes if available
+* Shorthands can be named as the property value if it's clearly identifiable
+* Shorthands use "-" for property names
+* Shorthands use "--" for property values
+* Shorthands use "-" at the end for viewport-sizes if available
+
+*/
+
+@import "../variables";
+
+// Display
+// ---------------------------
+.display--block           { display: block; }
+.display--inline          { display: inline; }
+.display--inline-block    { display: inline-block; }
+.display--flex            { display: -ms-flexbox; display: flex; }
+.display--none            { display: none; }
+
+// Positioning
+// ---------------------------
+.position--relative       { position: relative; }
+.position--absolute       { position: absolute; }
+.position--static         { position: static; }
+.position--sticky         { position: -webkit-sticky; position: sticky; }
+
+// Text
+// ---------------------------
+.text--left               { text-align: left; } // browser default
+.text--right              { text-align: right; }
+.text--center             { text-align: center; }
+.text--justify            { text-align: justify; }
+
+.text--start              { text-align: start; } // logical property - experimental
+.text--end                { text-align: end; } // logical property - experimental
+
+.text-transform--none     { text-transform: none; }
+.text--upper              { text-transform: uppercase; }
+.text--lower              { text-transform: lowercase; }
+.text--capitalize         { text-transform: capitalize; }
+
+.text-decoration-none     { text-decoration: none; }
+.text--underline          { text-decoration: underline; }
+.text--line-through       { text-decoration: line-through; }
+
+// Transform
+// ---------------------------
+.transform--none          { transform: none; }
+
+// Flexbox
+// ---------------------------
+.flex--wrap               { -ms-flex-wrap: wrap; flex-wrap: wrap; }
+
+// top to bottom axis
+.align-items--center      { align-items: center; }
+.align-items--start       { align-items: flex-start; }
+.align-items--end         { align-items: flex-end; }
+
+.align-self--center       { align-self: center; }
+.align-self--start        { align-self: flex-start; }
+.align-self--end          { align-self: flex-end; }
+
+// left to right axis
+.justify-content--center  { justify-content: center; }
+.justify-content--start   { justify-content: flex-start; }
+.justify-content--end     { justify-content: flex-end; }
+.justify-content--space-between { justify-content: space-between; }
+.justify-content--space-around  { justify-content: space-around; }
+.justify-content--space-evenly  { justify-content: space-evenly; }
+
+.justify-items--center    { justify-items: center; }
+.justify-items--start     { justify-items: flex-start; }
+.justify-items--end       { justify-items: flex-end; }
+
+.justify-self--center     { justify-self: center; }
+.justify-self--start      { justify-self: flex-start; }
+.justify-self--end        { justify-self: flex-end; }
+
+.direction--row             { -webkit-flex-direction: row; flex-direction: row; } // browser default
+.direction--row-reverse     { -webkit-flex-direction: row-reverse; flex-direction: row-reverse; }
+.direction--column          { -webkit-flex-direction: column; flex-direction: column; }
+.direction--column-reverse  { -webkit-flex-direction: column-reverse; flex-direction: column-reverse; }
+
+.pointer--none            { pointer-events: none; }
+.cursor--pointer          { cursor: pointer; }
+.overflow--hidden         { overflow: hidden; }
+
+@media screen and (min-width: @vw-min-mobile) {
+
+  // Display
+  // ---------------------------
+  .display--block-xs         { display: block; }
+  .display--inline-block-xs  { display: inline-block; }
+  .display--flex-xs          { display: -ms-flexbox; display: flex; }
+  .display--none-xs          { display: none; }
+
+  // Text
+  // ---------------------------
+  .text--left-xs             { text-align: left; }
+  .text--right-xs            { text-align: right; }
+  .text--center-xs           { text-align: center; }
+
+  // Flexbox
+  // ---------------------------
+  .justify-content--center-xs  { justify-content: center; }
+  .justify-content--start-xs   { justify-content: flex-start; }
+  .justify-content--space-between-xs { justify-content: space-between; }
+}
+
+@media screen and (min-width: @vw-min-tablet) {
+
+  // Display
+  // ---------------------------
+  .display--block-s          { display: block; }
+  .display--inline-block-s   { display: inline-block; }
+  .display--flex-s           { display: -ms-flexbox; display: flex; }
+  .display--none-s           { display: none; }
+
+  // Text
+  // ---------------------------
+  .text--left-s             { text-align: left; }
+  .text--right-s            { text-align: right; }
+  .text--center-s           { text-align: center; }
+
+  // Flexbox
+  // ---------------------------
+  .justify-content--center-s  { justify-content: center; }
+  .justify-content--start-s   { justify-content: flex-start; }
+  .justify-content--space-between-s { justify-content: space-between; }
+}
+
+@media screen and (min-width: @vw-min-grid) {
+
+  // Display
+  // ---------------------------
+  .display--block-m          { display: block; }
+  .display--inline-block-m   { display: inline-block; }
+  .display--flex-m           { display: -ms-flexbox; display: flex; }
+  .display--none-m           { display: none; }
+
+  // Text
+  // ---------------------------
+  .text--left-m             { text-align: left; }
+  .text--right-m            { text-align: right; }
+  .text--center-m           { text-align: center; }
+
+  // Flexbox
+  // ---------------------------
+  .justify-content--center-m  { justify-content: center; }
+  .justify-content--start-m   { justify-content: flex-start; }
+  .justify-content--space-between-m { justify-content: space-between; }
+}
+
+@media screen and (min-width: @vw-min-desktop) {
+
+  // Display
+  // ---------------------------
+  .display--block-l          { display: block; }
+  .display--inline-block-l   { display: inline-block; }
+  .display--flex-l           { display: -ms-flexbox; display: flex; }
+  .display--none-l           { display: none; }
+
+  // Text
+  // ---------------------------
+  .text--left-l             { text-align: left; }
+  .text--right-l            { text-align: right; }
+  .text--center-l           { text-align: center; }
+
+  // Flexbox
+  // ---------------------------
+  .justify-content--center-l  { justify-content: center; }
+  .justify-content--start-l   { justify-content: flex-start; }
+  .justify-content--space-between-l { justify-content: space-between; }
+}
