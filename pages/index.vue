@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useCollection } from "@/stores/collection";
 import { Asset, EntrySys, EntryFieldTypes } from "contentful";
 
 // Locales
@@ -23,13 +24,24 @@ type Album = {
   };
 };
 
+const collection = useCollection();
 const albums = await useAsyncData("content", async () => {
-  return await getEntries({
+  // Use stored data
+  if (await collection.check()) {
+    return unref(collection.data);
+  }
+
+  // Call new data
+  const entries = await getEntries({
     content_type: "album",
     order: ["-fields.releaseDate"],
     limit: 1000,
     locale: unref(locale),
   });
+
+  // Store data
+  await collection.set(entries);
+  return entries;
 });
 </script>
 
@@ -48,6 +60,8 @@ const albums = await useAsyncData("content", async () => {
                 {{ album.fields.title }}
               </li>
             </ul>
+
+            <MediaPlayer />
           </div>
         </div>
       </div>

@@ -38,7 +38,15 @@ export default defineNuxtConfig({
   },
 
   // Modules
-  modules: ["@nuxtjs/i18n"],
+  modules: ["@nuxtjs/i18n", "@pinia/nuxt"],
+
+  imports: {
+    dirs: ["./stores"],
+  },
+
+  pinia: {
+    autoImports: ["defineStore"],
+  },
 
   // Global page headers: https://nuxt.com/docs/api/configuration/nuxt-config#head
   app: {
