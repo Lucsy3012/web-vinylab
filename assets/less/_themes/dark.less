@@ -1,5 +1,10 @@
 @import "../variables";
 
+@color-black:       #161B16;
+@color-fade:        #f5f5f5;
+@color-white:       #ffffff;
+@color-accent:      #EBE7DD;
+
 // Dark Mode
 .theme--dark-mode {
 
@@ -16,6 +21,7 @@
   --site-color-active:        lighten(@color-white, 10%);
 
   // Fade color
+  /*
   --site-color-fade:          #181b1e;
   --site-color-fade-90:       fade(#181b1e, 90);
   --site-color-fade-75:       fade(#181b1e, 75);
@@ -26,6 +32,7 @@
   --site-color-fade-10:       fade(#181b1e, 10);
   --site-color-fade-hover:    lighten(#181b1e, 5%);
   --site-color-fade-active:   lighten(#181b1e, 10%);
+   */
 
   // Contrast color
   --site-contrast:            @color-black;
@@ -40,6 +47,7 @@
   --site-contrast-active:     darken(@color-black, 10%);
 
   // Accent color
+  /* no change detected
   --site-accent:              @color-accent;
   --site-accent-90:           fade(@color-accent, 90);
   --site-accent-75:           fade(@color-accent, 75);
@@ -50,9 +58,14 @@
   --site-accent-10:           fade(@color-accent, 10);
   --site-accent-hover:        darken(@color-accent, 5%);
   --site-accent-active:       darken(@color-accent, 10%);
+   */
 
   // Links (Default)
   --link-color:               var(--site-color, @color-black);
   --link-color-hover:         var(--site-accent, @color-accent);
   --link-color-active:        var(--site-accent, @color-accent);
+
+  body {
+    background-color: var(--site-color);
+  }
 }

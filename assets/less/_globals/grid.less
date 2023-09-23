@@ -2,36 +2,36 @@
 
 // Grid
 :root {
-  --section-width: 1280px;
-  --section-padding: 30px;
-  --section-inner-padding: 20px;
+  --section-width: 1800px;
+  --section-padding: 1em;
+  // --section-inner-padding: calc(2em - var(--gap-column));
   --columns: 12;
-  --gap-row: 10px;
-  --gap-column: 15px;
+  --gap-row: 1em;
+  --gap-column: 1em;
 
   @media screen and (min-width: @vw-min-mobile) {
-    --section-padding: 50px;
-    --section-inner-padding: 50px;
-    --gap-row: 15px;
-    --gap-column: 20px;
+    --section-padding: 1.25em;
+    // --section-inner-padding: 2.5em;
+    --gap-row: 1.25em;
+    --gap-column: 1.25em;
   }
   @media screen and (min-width: @vw-min-tablet) {
-    --section-padding: 60px;
-    --section-inner-padding: 60px;
-    --gap-row: 20px;
-    --gap-column: 30px;
+    // --section-padding: 24px;
+    // --section-inner-padding: 3em;
+    --gap-row: 1.5em;
+    --gap-column: 1.5em;
   }
   @media screen and (min-width: @vw-min-desktop) {
-    --section-padding: 70px;
-    --section-inner-padding: 70px;
-    --gap-row: 25px;
-    --gap-column: 40px;
+    --section-padding: 1.5em;
+    // --section-inner-padding: 4em;
+    --gap-row: 2em;
+    --gap-column: 2em;
   }
   @media screen and (min-width: @vw-min-desktop-large) {
-    --section-padding: 80px;
-    --section-inner-padding: 80px;
-    --gap-row: 30px;
-    --gap-column: 60px;
+    // --section-padding: 1.5em;
+    // --section-inner-padding: 4em;
+    // --gap-row: 2em;
+    // --gap-column: 2em;
   }
 }
 
@@ -39,30 +39,16 @@ section {
   display: block;
   position: relative;
   width: 100%;
-  padding: var(--section-padding, 120px) 0;
-
-  &.section--xl {
-    --section-padding: 60px;
-
-    @media screen and (min-width: @vw-min-mobile) {
-      --section-padding: 90px;
-    }
-    @media screen and (min-width: @vw-min-tablet) {
-      --section-padding: 130px;
-    }
-    @media screen and (min-width: @vw-min-desktop) {
-      --section-padding: 160px;
-    }
-    @media screen and (min-width: @vw-min-desktop-large) {
-      --section-padding: 200px;
-    }
-  }
+  padding: var(--section-padding, 28px) 0;
 }
 
 section > .inner {
   margin: auto;
-  padding: 0 var(--section-inner-padding, 20px);
-  max-width: ~'calc(var(--section-width, 1920px) + (var(--section-inner-padding, 40px) * 2) + (var(--gap-column, 40px) * 2))';
+  padding: 0 var(--gap-column, 1em);
+  max-width: calc(var(--section-width, 1800px) + (var(--gap-column, 1em) * 3));
+}
+section > .stretch {
+  padding: 0 calc(var(--gap-column, 1em) * 1.5);
 }
 
 .row {
@@ -87,8 +73,8 @@ section > .inner {
 }
 
 .offset {
-  margin-top: -200px;
-  transform: translateY(200px);
+  margin-top: -10em;
+  transform: translateY(10em);
 }
 
 .flex {

@@ -1,5 +1,10 @@
 @import "../variables";
 
+@color-black:       #161B16;
+@color-fade:        #f5f5f5;
+@color-white:       #ffffff;
+@color-accent:      #EBE7DD;
+
 // Custom Properties
 :root {
 
@@ -16,6 +21,7 @@
   --site-color-active:        lighten(@color-black, 10%);
 
   // Fade color
+  /*
   --site-color-fade:               @color-gray;
   --site-color-fade-90:            fade(@color-gray, 90);
   --site-color-fade-75:            fade(@color-gray, 75);
@@ -26,6 +32,7 @@
   --site-color-fade-10:            fade(@color-gray, 10);
   --site-color-fade-hover:         lighten(@color-gray, 5%);
   --site-color-fade-active:        lighten(@color-gray, 10%);
+   */
 
   // Contrast color
   --site-contrast:            @color-white;
@@ -48,11 +55,15 @@
   --site-accent-33:         fade(@color-accent, 33);
   --site-accent-25:         fade(@color-accent, 25);
   --site-accent-10:         fade(@color-accent, 10);
-  --site-accent-hover:      darken(@color-accent, 3.3%);
-  --site-accent-active:     darken(@color-accent, 7.5%);
+  // --site-accent-hover:      darken(@color-accent, 3.3%);
+  // --site-accent-active:     darken(@color-accent, 7.5%);
 
   // Links (Default)
   --link-color:             var(--site-color, @color-black);
   --link-color-hover:       var(--site-accent, @color-accent);
   --link-color-active:      var(--site-accent-active, darken(@color-accent, 7.5%));
+}
+
+.bg--site-accent {
+  background-color: var(--site-accent, @color-accent)
 }

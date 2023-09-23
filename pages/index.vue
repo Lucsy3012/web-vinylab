@@ -35,15 +35,22 @@ const albums = await useAsyncData("content", async () => {
 
 <template>
   <div>
-    <h1>Vinylab</h1>
-    <h2>{{ $t("albums.title") }}</h2>
-    <ul>
-      <li
-        v-for="album in albums.data.value.items as Album[]"
-        :key="album.sys.id"
-      >
-        {{ album.fields.title }}
-      </li>
-    </ul>
+    <section>
+      <div class="stretch">
+        <div class="row">
+          <div class="col col-12">
+            <h1 class="title-1">{{ $t("albums.title") }}</h1>
+            <ul class="mt2">
+              <li
+                v-for="album in albums.data.value.items as Album[]"
+                :key="album.sys.id"
+              >
+                {{ album.fields.title }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
