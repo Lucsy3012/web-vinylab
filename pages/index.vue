@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCollection } from "@/stores/collection";
-import { Asset, EntrySys, EntryFieldTypes } from "contentful";
+import { useSelected } from "@/stores/selected";
+import { Album } from "~~/types/globalTypes";
 
 // Locales
 const localePath = useLocalePath();
@@ -8,21 +9,6 @@ const { t, locale } = useI18n();
 
 // Contentful
 const { getEntries } = useContentful();
-
-type Album = {
-  sys: EntrySys;
-  fields: {
-    title: EntryFieldTypes.Text;
-    slug: EntryFieldTypes.Text;
-    releaseDate?: EntryFieldTypes.Date;
-    rpm: EntryFieldTypes.Text;
-    size: EntryFieldTypes.Text;
-    moodColor?: EntryFieldTypes.Text;
-    albumCoverFront?: Asset;
-    albumCoverBack?: Asset;
-    albumCoverSide?: Asset;
-  };
-};
 
 const collection = useCollection();
 const albums = await useAsyncData("content", async () => {
@@ -43,6 +29,12 @@ const albums = await useAsyncData("content", async () => {
   await collection.set(entries);
   return entries;
 });
+
+// Selecting album
+const selected = useSelected();
+function selectAlbum(album: Album) {
+  selected.setAlbum(album);
+}
 </script>
 
 <template>
@@ -55,13 +47,14 @@ const albums = await useAsyncData("content", async () => {
             <ul class="mt2">
               <li
                 v-for="album in albums.data.value.items as Album[]"
+                @click="selectAlbum(album)"
                 :key="album.sys.id"
               >
                 {{ album.fields.title }}
               </li>
             </ul>
 
-            <MediaPlayer />
+            <MediaPlayer :key="selected.side?.sys?.id ?? 'default'" />
           </div>
         </div>
       </div>

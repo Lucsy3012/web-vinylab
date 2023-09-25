@@ -1,39 +1,50 @@
 <script setup lang="ts">
-import { useCollection } from "@/stores/collection";
+import { useSelected } from "@/stores/selected";
+import { useSettings } from "@/stores/settings";
 import { useMediaControls } from "@vueuse/core";
 
-/* for later
-const collection = useCollection();
-const mediaPlayer = await useAsyncData("media-player", async () => {
-  if (await collection.check()) {
-    return unref(collection.data);
-  }
-});
- */
+const selected = useSelected();
+const settings = useSettings();
 
 const currentAudioFile = ref<HTMLAudioElement>();
 const { playing, currentTime, duration, volume, muted } = useMediaControls(
   currentAudioFile,
   {
     src: {
-      // src: "https://assets.ctfassets.net/rlw7c1gzufpy/7eDCqMgMSiB0PthdJCySrk/ac977951ce3b35827f5378698384bb13/Dark_Cycle_2_-_01_Schwarze_Materie.mp3",
-      src: "Dark Cycle 3 - 01 Origin.mp3",
-      type: "audio/mpeg",
+      src: selected?.song?.fields?.file?.url,
+      type: selected?.song?.fields?.file?.contentType,
     },
   },
 );
 
+/* maybe reference for later
+onUpdated(() => {
+  albumName = selected?.album?.fields?.title;
+  songName = selected?.song?.fields?.title;
+  songUrl = selected?.song?.fields?.file?.url;
+  songFileType = selected?.song?.fields?.file?.contentType;
+});
+ */
+
 onMounted(() => {
-  volume.value = 0.75;
-  currentTime.value = 10;
+  playing.value = false;
+  volume.value = settings.volume;
 });
 </script>
 
 <template>
-  <div class="media-player" @keydown.prevent.space="playing = !playing">
+  <div
+    class="media-player"
+    :class="{ disabled: !selected?.song?.fields?.file?.url }"
+    @keydown.prevent.space="playing = !playing"
+  >
     <div>Media Player</div>
+    <div>Album Title: {{ selected?.album?.fields?.title }}</div>
+    <div>Song Title: {{ selected?.song?.fields?.title }}</div>
+    <audio ref="currentAudioFile" controls></audio>
     <button @click="playing = !playing">Play / Pause</button>
     <button @click="muted = !muted">Mute</button>
     <span>{{ currentTime }} / {{ duration }}</span>
+    <Scrubber v-model="volume" :max="1" />
   </div>
 </template>
