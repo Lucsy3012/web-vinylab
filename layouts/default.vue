@@ -1,5 +1,5 @@
 <template>
-  <div class="bg--site-accent">
+  <div>
     <!-- todo add header + navigation -->
     <NuxtPage />
     <!-- todo add footer -->

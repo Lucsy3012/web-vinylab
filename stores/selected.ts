@@ -18,6 +18,10 @@ export const useSelected = defineStore("selected", {
       this.song = value?.fields?.sides[0]?.fields?.songs[0] ?? {};
       this.moodColor = value?.fields?.moodColor ?? "#EBE7DD";
     },
+    async setSide(value: Side): Promise<void> {
+      this.side = value ?? {};
+      this.song = value?.fields?.songs[0] ?? {};
+    },
 
     // Checks
     async checkAlbum(): Promise<boolean> {

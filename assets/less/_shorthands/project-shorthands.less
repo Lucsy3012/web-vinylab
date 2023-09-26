@@ -41,7 +41,7 @@
 
 // Transition
 .transit {
-  transition: var(--transition-property, all) var(--transition-duration, .2s) var(--transition-timing-function, @bezier-pull);
+  transition: var(--transition-property, all) var(--transition-duration, .2s) var(--transition-timing-function, var(--bezier-pull));
   transition-delay: var(--transition-delay, 0s);
   will-change: var(--transition-property, all);
 }

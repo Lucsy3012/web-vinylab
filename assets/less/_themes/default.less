@@ -47,7 +47,7 @@
   --site-contrast-active:     darken(@color-white, 10%);
 
   // Accent color
-  --site-accent:            @color-accent;
+  // --site-accent:            @color-accent;
   --site-accent-90:         fade(@color-accent, 90);
   --site-accent-75:         fade(@color-accent, 75);
   --site-accent-66:         fade(@color-accent, 66);
@@ -62,6 +62,12 @@
   --link-color:             var(--site-color, @color-black);
   --link-color-hover:       var(--site-accent, @color-accent);
   --link-color-active:      var(--site-accent-active, darken(@color-accent, 7.5%));
+}
+
+@property --site-accent {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: @color-accent;
 }
 
 .bg--site-accent {

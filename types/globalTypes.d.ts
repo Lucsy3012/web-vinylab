@@ -8,7 +8,7 @@ export type Song = {
 export type Side = {
   sys: EntrySys;
   fields: {
-    name: EntryFieldTypes.Text;
+    side: EntryFieldTypes.Text;
     songs: Song[];
   };
 };

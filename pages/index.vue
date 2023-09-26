@@ -44,11 +44,12 @@ function selectAlbum(album: Album) {
         <div class="row">
           <div class="col col-12">
             <h1 class="title-1">{{ $t("albums.title") }}</h1>
-            <ul class="mt2">
+            <ul class="mt2 album-controller">
               <li
                 v-for="album in albums.data.value.items as Album[]"
                 @click="selectAlbum(album)"
                 :key="album.sys.id"
+                :class="{ selected: album.sys.id === selected?.album?.sys?.id }"
               >
                 {{ album.fields.title }}
               </li>
@@ -61,3 +62,12 @@ function selectAlbum(album: Album) {
     </section>
   </div>
 </template>
+
+<style lang="less" scoped>
+.album-controller {
+  li.selected {
+    font-weight: bold;
+    color: var(--site-color);
+  }
+}
+</style>
