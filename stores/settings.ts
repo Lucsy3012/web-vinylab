@@ -5,6 +5,7 @@ export const useSettings = defineStore("settings", {
     display: "grid" as "grid" | "list" | "coverflow",
     mode: "explore" as "explore" | "experience",
     volume: <number>0.75,
+    playing: <boolean>false,
   }),
 
   actions: {
@@ -16,6 +17,12 @@ export const useSettings = defineStore("settings", {
     },
     async setVolume(value: number): Promise<void> {
       this.volume = value;
+    },
+    async setPlaying(value: boolean): Promise<void> {
+      this.playing = value;
+    },
+    async togglePlaying(): Promise<void> {
+      this.playing = !this.playing;
     },
   },
 });

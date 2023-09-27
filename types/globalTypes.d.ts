@@ -9,6 +9,8 @@ export type Side = {
   sys: EntrySys;
   fields: {
     side: EntryFieldTypes.Text;
+    vinyl?: Asset;
+    label?: Asset;
     songs: Song[];
   };
 };
@@ -16,7 +18,7 @@ export type Side = {
 export type Artist = {
   sys: EntrySys;
   fields: {
-    name: EntryFieldTypes.Text;
+    artistName: EntryFieldTypes.Text;
     avatar: Asset;
   };
 };

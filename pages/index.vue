@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useCollection } from "@/stores/collection";
 import { useSelected } from "@/stores/selected";
+import { useSettings } from "@/stores/settings";
+
 import { Album } from "~~/types/globalTypes";
 
 // Locales
@@ -20,7 +22,7 @@ const albums = await useAsyncData("content", async () => {
   // Call new data
   const entries = await getEntries({
     content_type: "album",
-    order: ["-fields.releaseDate"],
+    order: ["fields.releaseDate"],
     limit: 1000,
     locale: unref(locale),
   });
@@ -29,6 +31,9 @@ const albums = await useAsyncData("content", async () => {
   await collection.set(entries);
   return entries;
 });
+
+// Global settings
+const settings = useSettings();
 
 // Selecting album
 const selected = useSelected();
@@ -44,6 +49,19 @@ function selectAlbum(album: Album) {
         <div class="row">
           <div class="col col-12">
             <h1 class="title-1">{{ $t("albums.title") }}</h1>
+            <div
+              class="mt2 album-controller"
+              :class="`album-controller--${settings.display}`"
+            >
+              <AlbumItem
+                v-for="album in albums.data.value.items as Album[]"
+                :album="album"
+                @click="selectAlbum(album)"
+                :key="album.sys.id"
+                :class="{ selected: album.sys.id === selected?.album?.sys?.id }"
+              />
+            </div>
+            <!--
             <ul class="mt2 album-controller">
               <li
                 v-for="album in albums.data.value.items as Album[]"
@@ -54,6 +72,7 @@ function selectAlbum(album: Album) {
                 {{ album.fields.title }}
               </li>
             </ul>
+            -->
 
             <MediaPlayer :key="selected.side?.sys?.id ?? 'default'" />
           </div>
@@ -68,6 +87,13 @@ function selectAlbum(album: Album) {
   li.selected {
     font-weight: bold;
     color: var(--site-color);
+  }
+
+  // Display types
+  &.album-controller--grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
   }
 }
 </style>
