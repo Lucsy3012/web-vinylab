@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Album, Side, Song } from "~~/types/globalTypes";
+import { Album, ComposedSide, Side, Song } from "~~/types/globalTypes";
 
 export const useSelected = defineStore("selected", {
   state: () => ({
@@ -7,6 +7,14 @@ export const useSelected = defineStore("selected", {
     sides: <Side[]>[],
     side: <Side>{},
     song: <Song>{},
+    composedSide: {
+      url: "",
+      sizes: [],
+      sizesCompounded: [],
+      lengths: [],
+      lengthsCompounded: [],
+      activeSong: 0,
+    },
     moodColor: <string>"#EBE7DD",
   }),
 
@@ -21,6 +29,26 @@ export const useSelected = defineStore("selected", {
     async setSide(value: Side): Promise<void> {
       this.side = value ?? {};
       this.song = value?.fields?.songs[0] ?? {};
+    },
+    async setComposedSide(value: ComposedSide): Promise<void> {
+      if (!!value.url) {
+        this.composedSide.url = value.url;
+      }
+      if (!!value.sizes) {
+        this.composedSide.sizes = value.sizes;
+      }
+      if (!!value.sizesCompounded) {
+        this.composedSide.sizesCompounded = value.sizesCompounded;
+      }
+      if (!!value.lengths) {
+        this.composedSide.lengths = value.lengths;
+      }
+      if (!!value.lengthsCompounded) {
+        this.composedSide.lengthsCompounded = value.lengthsCompounded;
+      }
+      if (!!value.activeSong) {
+        this.composedSide.activeSong = value.activeSong;
+      }
     },
 
     // Checks

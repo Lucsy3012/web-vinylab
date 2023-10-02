@@ -15,6 +15,15 @@ export type Side = {
   };
 };
 
+export type ComposedSide = {
+  url?: string;
+  sizes?: number[];
+  sizesCompounded?: number[];
+  lengths?: number[];
+  lengthsCompounded?: number[];
+  activeSong?: number;
+};
+
 export type Artist = {
   sys: EntrySys;
   fields: {
@@ -29,7 +38,7 @@ export type Album = {
     title: EntryFieldTypes.Text;
     slug: EntryFieldTypes.Text;
     releaseDate?: EntryFieldTypes.Date;
-    rpm: EntryFieldTypes.Text;
+    rpm: EntryFieldTypes.Number;
     size: EntryFieldTypes.Text;
     moodColor?: EntryFieldTypes.Text;
     albumCoverFront?: Asset;

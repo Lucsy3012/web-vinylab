@@ -4,6 +4,7 @@ export const useSettings = defineStore("settings", {
   state: () => ({
     display: "grid" as "grid" | "list" | "coverflow",
     mode: "explore" as "explore" | "experience",
+    rpm: <number>45,
     volume: <number>0.75,
     playing: <boolean>false,
   }),
@@ -14,6 +15,9 @@ export const useSettings = defineStore("settings", {
     },
     async setMode(value: "explore" | "experience"): Promise<void> {
       this.mode = value;
+    },
+    async setRPM(value: number): Promise<void> {
+      this.rpm = value;
     },
     async setVolume(value: number): Promise<void> {
       this.volume = value;
