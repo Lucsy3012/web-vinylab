@@ -30,6 +30,9 @@ export const useSelected = defineStore("selected", {
       this.side = value ?? {};
       this.song = value?.fields?.songs[0] ?? {};
     },
+    async setSong(value: Song): Promise<void> {
+      this.song = value ?? {};
+    },
     async setComposedSide(value: ComposedSide): Promise<void> {
       if (!!value.url) {
         this.composedSide.url = value.url;
@@ -46,7 +49,7 @@ export const useSelected = defineStore("selected", {
       if (!!value.lengthsCompounded) {
         this.composedSide.lengthsCompounded = value.lengthsCompounded;
       }
-      if (!!value.activeSong) {
+      if (value.activeSong !== undefined) {
         this.composedSide.activeSong = value.activeSong;
       }
     },

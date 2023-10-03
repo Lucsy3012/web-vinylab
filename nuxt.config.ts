@@ -18,7 +18,7 @@ const meta = {
 export default defineNuxtConfig({
   nitro: undefined,
   target: "static",
-  ssr: true,
+  ssr: false,
   pages: true,
 
   // Devtools

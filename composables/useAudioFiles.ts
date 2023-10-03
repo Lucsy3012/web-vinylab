@@ -1,8 +1,11 @@
 import { createSharedComposable } from "@vueuse/core/index";
 import { Song } from "~/types/globalTypes";
 // import lamejs from "lamejs";
+import Crunker from "crunker";
 
 export function useAudioFilesService() {
+  const crunker = new Crunker();
+
   async function concat(uris: string[]) {
     const proms = uris.map((uri) => fetch(uri).then((r) => r.blob()));
     return await Promise.all(proms).then((blobs) => {
@@ -11,6 +14,19 @@ export function useAudioFilesService() {
       return blobUrl;
       // return new Audio(blobUrl);
     });
+  }
+
+  async function concat2(uris: string[]) {
+    return await crunker
+      .fetchAudio(...uris)
+      .then((buffers) => crunker.concatAudio(buffers))
+      .then((merged) => crunker.export(merged, "audio/mp3"))
+      .then((output) => {
+        return output.url;
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
   }
 
   /* second approach, also not working
@@ -115,11 +131,10 @@ export function useAudioFilesService() {
     });
 
     // return await concat(allSongs as string[]);
-    return await concat(allSongs as string[]);
+    return await concat2(allSongs as string[]);
   }
 
   return {
-    concat,
     getDurations,
     getComposedSideUrls,
   };

@@ -39,9 +39,7 @@ if (selected?.side?.fields?.songs?.length > 0) {
 
 const composingSide = await useAsyncData("composing-side", async () => {
   // Get composed side details
-  const url =
-    (await audioFiles.getComposedSideUrls(allSongsOfSide)) ??
-    selected?.song?.fields?.file?.url;
+  const url = await audioFiles.getComposedSideUrls(allSongsOfSide);
 
   // todo fix
   // const sizes = await audioFiles.getComposedSideSizes(allSongsOfSide);
@@ -95,7 +93,6 @@ const mediaControls = composingSide.data.value?.mediaControls;
 function findIndexBelow(array: number[], value: number) {
   for (let i = 0; i < array.length; i++) {
     if (value <= array[i]) {
-      console.log(i);
       return i;
     }
   }
@@ -105,14 +102,22 @@ function findIndexBelow(array: number[], value: number) {
 watch(
   () => mediaControls?.currentTime,
   () => {
-    const index = findIndexBelow(
-      selected?.composedSide?.lengthsCompounded,
-      mediaControls?.currentTime ?? 0,
-    );
+    // Get currently running song by checking runtime of composed side song
+    const index: number =
+      findIndexBelow(
+        selected?.composedSide?.lengthsCompounded,
+        mediaControls?.currentTime,
+      ) ?? 0;
 
-    selected?.setComposedSide({
-      activeSong: index,
-    });
+    const activeSong = selected?.side?.fields?.songs[index];
+    const activeSongId = activeSong?.sys?.id;
+
+    if (activeSongId !== selected?.song?.sys?.id) {
+      selected?.setSong(activeSong);
+      selected?.setComposedSide({
+        activeSong: index,
+      });
+    }
   },
 );
 
@@ -140,7 +145,7 @@ onUpdated(() => {
     <h2 class="title-2 mt2">{{ $t("songs.title") }}</h2>
     <div>Current Title: {{ selected?.song?.fields?.title }}</div>
     <h3 class="title-3 mt2">{{ $t("songs.titleAll") }}</h3>
-    <ul>
+    <ul class="songs">
       <li
         v-for="song in selected?.side?.fields?.songs as Song[]"
         :key="song.sys.id"
@@ -189,6 +194,9 @@ onUpdated(() => {
 </template>
 
 <style lang="less" scoped>
+@import (reference) "../assets/less/variables.less";
+@import (reference) "../assets/less/shorthands.less";
+
 .media-player {
   // todo
   &.disabled {
@@ -196,11 +204,16 @@ onUpdated(() => {
     pointer-events: none;
   }
 
+  .songs,
   .sides-controller,
   .rpm-controller {
     .selected {
+      --transition-property: color;
+      --transition-duration: 0.5s;
+      --transition-timing-function: ease-in-out;
       font-weight: bold;
       color: var(--site-color);
+      .transit();
     }
   }
 }
