@@ -1,6 +1,6 @@
 import { createSharedComposable } from "@vueuse/core/index";
-// import { useCompound } from "~/composables/useCompound";
 import { Song } from "~/types/globalTypes";
+// import lamejs from "lamejs";
 
 export function useAudioFilesService() {
   async function concat(uris: string[]) {
@@ -12,6 +12,78 @@ export function useAudioFilesService() {
       // return new Audio(blobUrl);
     });
   }
+
+  /* second approach, also not working
+  async function concat(uris: string[]) {
+    const audioContext = new (window.AudioContext ||
+      window.webkitAudioContext)();
+    const buffers = [];
+
+    try {
+      for (const uri of uris) {
+        const response = await fetch(uri);
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        buffers.push(audioBuffer);
+      }
+
+      // Concatenate the audio buffers
+      let concatenatedBuffer = null;
+      for (const buffer of buffers) {
+        if (!concatenatedBuffer) {
+          concatenatedBuffer = audioContext.createBuffer(
+            buffer.numberOfChannels,
+            buffer.length,
+            buffer.sampleRate,
+          );
+        }
+
+        concatenatedBuffer.getChannelData(0).set(buffer.getChannelData(0), 0);
+        concatenatedBuffer.getChannelData(1).set(buffer.getChannelData(1), 0);
+      }
+
+      // Encode the concatenated audio buffer back to an MP3 file using lamejs
+      const mp3encoder = new lamejs.Mp3Encoder(
+        2,
+        concatenatedBuffer.sampleRate,
+        128,
+      ); // 2 channels, sample rate, and bit rate
+
+      const leftData = concatenatedBuffer.getChannelData(0);
+      const rightData = concatenatedBuffer.getChannelData(1);
+      const samples = leftData.length;
+
+      const mp3Data = [];
+
+      for (let i = 0; i < samples; i++) {
+        const leftSample = leftData[i] * 32767.0; // Convert to 16-bit PCM
+        const rightSample = rightData[i] * 32767.0;
+        const mp3Buffer = mp3encoder.encodeBuffer([leftSample, rightSample]);
+        mp3Data.push(new Int8Array(mp3Buffer));
+      }
+
+      const mp3Buffer = mp3encoder.flush();
+      if (mp3Buffer.length > 0) {
+        mp3Data.push(new Int8Array(mp3Buffer));
+      }
+
+      // Concatenate the MP3 data arrays
+      const finalMp3Data = [].concat.apply([], mp3Data);
+
+      // Create a Blob from the encoded MP3 data
+      const mp3Blob = new Blob([new Uint8Array(finalMp3Data)], {
+        type: "audio/mp3",
+      });
+
+      // Create a URL for the Blob
+      const mp3Url = URL.createObjectURL(mp3Blob);
+
+      return mp3Url;
+    } catch (error) {
+      console.error("Error concatenating MP3 files:", error);
+    }
+  }
+  */
 
   async function getDurations(songs: Song[]) {
     return await Promise.all(
@@ -42,33 +114,14 @@ export function useAudioFilesService() {
       return song.fields?.file?.url;
     });
 
+    // return await concat(allSongs as string[]);
     return await concat(allSongs as string[]);
-  }
-
-  // todo fix
-  async function getComposedSideSizes(songs: Song[]) {
-    if (!songs) return;
-
-    let songSize = 0;
-
-    const individual = songs.map((song) => {
-      return song.fields?.file?.details?.size ?? 0;
-    });
-    const compound = songs.map((song) => {
-      songSize += song.fields?.file?.details?.size ?? 0;
-    });
-
-    return {
-      individual,
-      compound,
-    };
   }
 
   return {
     concat,
     getDurations,
     getComposedSideUrls,
-    getComposedSideSizes,
   };
 }
 

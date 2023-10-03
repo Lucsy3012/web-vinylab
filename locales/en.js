@@ -14,4 +14,8 @@ export default {
   artists: {
     title: "Artists",
   },
+  songs: {
+    title: "Songs",
+    titleAll: "All songs",
+  },
 };

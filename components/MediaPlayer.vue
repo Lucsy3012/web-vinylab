@@ -2,6 +2,7 @@
 import { useSelected } from "@/stores/selected";
 import { useSettings } from "@/stores/settings";
 import { useMediaControls } from "@vueuse/core";
+import { useCompound } from "~/composables/useCompound";
 import { Side, Song } from "~/types/globalTypes";
 import { useAudioFiles } from "~/composables/useAudioFiles";
 
@@ -19,25 +20,6 @@ function selectSide(side: Side) {
 // Compose merged audio file
 const composedSideLoading = ref(true);
 const allSongsOfSide = selected?.side?.fields?.songs as Song[];
-
-/*
-async function composedSideUrls() {
-  if (!allSongsOfSide) return;
-
-  const allSongsOfSideUrls = allSongsOfSide.map((song) => {
-    return song.fields?.file?.url;
-  });
-  return await audioFiles.concat(allSongsOfSideUrls as string[]);
-}
-
-async function composedSideSizes() {
-  if (!allSongsOfSide) return;
-
-  return allSongsOfSide.map((song) => {
-    songSize += song.fields?.file?.details?.size ?? 0;
-  });
-}
- */
 
 // Define song details of composed side
 let songSize = 0;
@@ -61,30 +43,20 @@ const composingSide = await useAsyncData("composing-side", async () => {
     (await audioFiles.getComposedSideUrls(allSongsOfSide)) ??
     selected?.song?.fields?.file?.url;
 
-  /* todo fix
-  const sizes = await audioFiles.getComposedSideSizes(allSongsOfSide);
-  const sizesCompounded =
-    await audioFiles.getComposedSideSizes(allSongsOfSide)?.compound;
-   */
+  // todo fix
+  // const sizes = await audioFiles.getComposedSideSizes(allSongsOfSide);
+  // const sizesCompounded = useCompound().compoundArray(sizes);
 
   const lengths = (await audioFiles.getDurations(allSongsOfSide)) as number[];
-  const lengthsCompounded = lengths.reduce((last, current) => {
-    if (last.length === 0) {
-      return [current];
-    } else {
-      const lastSum = last[last.length - 1];
-      last.push(lastSum + current);
-      return last;
-    }
-  }, []);
+  const lengthsCompounded = useCompound().compoundArray(lengths);
 
   // Set composed side details
   await selected.setComposedSide({
     url,
-    // sizes: sizes?.individual ?? [],
-    // sizesCompounded: sizes?.compound ?? [],
+    // sizes,
+    // sizesCompounded,
     lengths,
-    lengthsCompounded, // todo later
+    lengthsCompounded,
     activeSong: 0,
   });
 
@@ -120,6 +92,30 @@ const composingSide = await useAsyncData("composing-side", async () => {
 
 const mediaControls = composingSide.data.value?.mediaControls;
 
+function findIndexBelow(array: number[], value: number) {
+  for (let i = 0; i < array.length; i++) {
+    if (value <= array[i]) {
+      console.log(i);
+      return i;
+    }
+  }
+}
+
+// Watchers
+watch(
+  () => mediaControls?.currentTime,
+  () => {
+    const index = findIndexBelow(
+      selected?.composedSide?.lengthsCompounded,
+      mediaControls?.currentTime ?? 0,
+    );
+
+    selected?.setComposedSide({
+      activeSong: index,
+    });
+  },
+);
+
 // Updates
 onUpdated(() => {
   // Change color
@@ -131,7 +127,6 @@ onUpdated(() => {
     );
   }
 
-  // Todo: update rate when clicking on RPM
   composingSide.data.value?.updateRate();
 });
 </script>
@@ -142,9 +137,18 @@ onUpdated(() => {
     :class="{ disabled: !selected?.song?.fields?.file?.url }"
     @keydown.prevent.space="mediaControls.playing = !mediaControls.playing"
   >
-    <div>Media Player</div>
-    <div>Album Title: {{ selected?.album?.fields?.title }}</div>
-    <div>Song Title: {{ selected?.song?.fields?.title }}</div>
+    <h2 class="title-2 mt2">{{ $t("songs.title") }}</h2>
+    <div>Current Title: {{ selected?.song?.fields?.title }}</div>
+    <h3 class="title-3 mt2">{{ $t("songs.titleAll") }}</h3>
+    <ul>
+      <li
+        v-for="song in selected?.side?.fields?.songs as Song[]"
+        :key="song.sys.id"
+        :class="{ selected: song.sys.id === selected?.song?.sys?.id }"
+      >
+        {{ song?.fields?.title }}
+      </li>
+    </ul>
     <audio ref="currentAudioFile" controls></audio>
     <button @click="mediaControls.playing = !mediaControls.playing">
       Play / Pause
