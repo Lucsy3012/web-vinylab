@@ -12,6 +12,7 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@nuxtjs/i18n": "8.0.0-rc.4",
+    "@nuxtjs/supabase": "^1.1.2",
     "nuxt": "^3.7.3",
     "prettier": "3.0.3"
   },

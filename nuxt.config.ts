@@ -38,10 +38,20 @@ export default defineNuxtConfig({
   },
 
   // Modules
-  modules: ["@nuxtjs/i18n", "@pinia/nuxt"],
+  modules: ["@nuxtjs/i18n", "@nuxtjs/supabase", "@pinia/nuxt"],
 
   imports: {
     dirs: ["./stores"],
+  },
+
+  supabase: {
+    url: process.env.SUPABASE_URL,
+    key: process.env.SUPABASE_KEY,
+    redirectOptions: {
+      login: "/de/login",
+      callback: "/de/confirm",
+      exclude: [],
+    },
   },
 
   pinia: {
