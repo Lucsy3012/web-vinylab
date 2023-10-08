@@ -151,13 +151,16 @@ const vinylLabel = computed(() => {
       right: 0;
       aspect-ratio: 1;
       border-radius: 100%;
-      background-color: #161b16; // default
       rotate: calc(
         var(--album-vinyl-rotation-constant, 0deg) +
           (1deg * 180 * var(--album-vinyl-stick-out))
       );
       z-index: 1;
       .transit();
+
+      &:not(:has(img)) {
+        background-color: #161b16; // default
+      }
 
       .album-vinyl-texture,
       .album-vinyl-label,

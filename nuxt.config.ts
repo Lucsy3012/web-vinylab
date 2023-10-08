@@ -34,6 +34,9 @@ export default defineNuxtConfig({
         host: process.env.CONTENTFUL_HOST,
         accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
       },
+      freeconvert: {
+        key: process.env.FREECONVERT_KEY,
+      },
     },
   },
 

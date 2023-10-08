@@ -19,7 +19,7 @@ const albums = await useAsyncData("content", async () => {
     return unref(collection.data);
   }
 
-  // Call new data
+  // Call albums from Contentful
   const entries = await getEntries({
     content_type: "album",
     order: ["fields.releaseDate"],
@@ -29,6 +29,7 @@ const albums = await useAsyncData("content", async () => {
 
   // Store data
   await collection.set(entries);
+
   return entries;
 });
 

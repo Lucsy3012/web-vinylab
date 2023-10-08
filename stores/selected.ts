@@ -8,12 +8,11 @@ export const useSelected = defineStore("selected", {
     side: <Side>{},
     song: <Song>{},
     composedSide: {
-      url: "",
-      sizes: [],
-      sizesCompounded: [],
-      lengths: [],
-      lengthsCompounded: [],
-      activeSong: 0,
+      url: <string>"",
+      name: <string>"",
+      lengths: <number[]>[],
+      lengthsCompounded: <number[]>[],
+      activeSong: <number>0,
     },
     moodColor: <string>"#EBE7DD",
   }),
@@ -37,11 +36,8 @@ export const useSelected = defineStore("selected", {
       if (!!value.url) {
         this.composedSide.url = value.url;
       }
-      if (!!value.sizes) {
-        this.composedSide.sizes = value.sizes;
-      }
-      if (!!value.sizesCompounded) {
-        this.composedSide.sizesCompounded = value.sizesCompounded;
+      if (!!value.name) {
+        this.composedSide.name = value.name;
       }
       if (!!value.lengths) {
         this.composedSide.lengths = value.lengths;

@@ -17,8 +17,7 @@ export type Side = {
 
 export type ComposedSide = {
   url?: string;
-  sizes?: number[];
-  sizesCompounded?: number[];
+  name?: string;
   lengths?: number[];
   lengthsCompounded?: number[];
   activeSong?: number;

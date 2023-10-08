@@ -5,10 +5,12 @@ import { useMediaControls } from "@vueuse/core";
 import { useCompound } from "~/composables/useCompound";
 import { Side, Song } from "~/types/globalTypes";
 import { useAudioFiles } from "~/composables/useAudioFiles";
+import { useComposition } from "~/composables/useComposition";
 
 const selected = useSelected();
 const settings = useSettings();
 const audioFiles = useAudioFiles();
+const composition = useComposition();
 
 const currentAudioFile = ref<HTMLAudioElement>();
 
@@ -19,40 +21,40 @@ function selectSide(side: Side) {
 
 // Compose merged audio file
 const composedSideLoading = ref(true);
-const allSongsOfSide = selected?.side?.fields?.songs as Song[];
-
-// Define song details of composed side
-let songSize = 0;
-if (selected?.side?.fields?.songs?.length > 0) {
-  const allSongsOfSideSizes = allSongsOfSide.map((song) => {
-    songSize += song.fields?.file?.details?.size ?? 0;
-    return songSize;
-  });
-
-  // todo move to composingSide function
-  selected.setComposedSide({
-    sizes: allSongsOfSideSizes, // todo fix
-    sizesCompounded: allSongsOfSideSizes,
-    activeSong: 0,
-  });
-}
+const compositionSongs = composition.getSongs(selected);
+const compositionName = composition.getFileName(selected);
+const storedFile = ref(undefined);
 
 const composingSide = await useAsyncData("composing-side", async () => {
-  // Get composed side details
-  const url = await audioFiles.getComposedSideUrls(allSongsOfSide);
+  try {
+    storedFile.value = await composition.getStoredFile(selected);
+  } catch {
+    console.log("No stored file found");
+  }
 
-  // todo fix
-  // const sizes = await audioFiles.getComposedSideSizes(allSongsOfSide);
-  // const sizesCompounded = useCompound().compoundArray(sizes);
+  const createdFile = await audioFiles.getComposedSideUrls(
+    selected,
+    compositionSongs,
+  );
 
-  const lengths = (await audioFiles.getDurations(allSongsOfSide)) as number[];
+  // Get composed song url (first check if it's already stored, otherwise compose it)
+  const url = storedFile.value || createdFile;
+
+  // Create composed side details
+  console.log("url", url);
+  if (url?.includes("blob:")) {
+    console.log(
+      "File has been composed on the fly, todo uploading to supabase",
+    );
+  }
+
+  const lengths = (await audioFiles.getDurations(compositionSongs)) as number[];
   const lengthsCompounded = useCompound().compoundArray(lengths);
 
   // Set composed side details
   await selected.setComposedSide({
     url,
-    // sizes,
-    // sizesCompounded,
+    name: compositionName,
     lengths,
     lengthsCompounded,
     activeSong: 0,
@@ -155,13 +157,17 @@ onUpdated(() => {
       </li>
     </ul>
     <audio ref="currentAudioFile" controls></audio>
-    <button @click="mediaControls.playing = !mediaControls.playing">
+    <button @click="mediaControls.playing = !mediaControls?.playing">
       Play / Pause
     </button>
-    <button @click="mediaControls.muted = !mediaControls.muted">Mute</button>
-    <span>{{ mediaControls.currentTime }} / {{ mediaControls.duration }}</span>
-    <span>RPM {{ mediaControls.rate }}</span>
-    <Scrubber v-model="mediaControls.volume" :max="1" />
+    <button @click="mediaControls.muted = !mediaControls?.muted">Mute</button>
+    <span
+      >{{ mediaControls?.currentTime }} / {{ mediaControls?.duration }}</span
+    >
+    <span>RPM {{ mediaControls?.rate }}</span>
+    <!--
+    <Scrubber v-if="!!mediaControls?.volume" v-model="mediaControls.volume" :max="1" />
+    -->
 
     <div>Sides:</div>
     <ul class="sides-controller">
