@@ -1,0 +1,42 @@
+
+
+.form--group {
+  padding: 0.5em 0;
+}
+
+// Inputs
+input {
+  font-family: 'Satoshi', -apple-system, 'Arial', sans-serif;
+  font-size: clamp(14px, 4vw, 16px);
+  font-variation-settings: "wght" 550;
+  color: var(--site-color-66);
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  border: 1px solid #DEE6E7;
+  border-radius: 4px;
+  box-shadow: 0 3px 4px -3px rgba(0, 0, 0, 0.1);
+  appearance: none;
+  .transit();
+
+  &::placeholder,
+  &::-webkit-input-placeholder {
+    color: var(--site-color-33);
+  }
+
+  &:not([type="checkbox"]),
+  &:not([type="radio"]),
+  &:not([type="submit"]) {
+    width: 100%;
+    padding: 0.8em 1em;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #B7BDBE;
+  }
+}
+
+.form--error {
+  color: #CD4051;
+  border-color: #CD4051;
+}

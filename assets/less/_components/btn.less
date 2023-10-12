@@ -2,52 +2,112 @@
 @import "../shorthands";
 
 :root {
-  --btn-padding-top-bottom: 0.50em;
-  --btn-padding-left-right: 1.25em;
+  --btn-padding-top-bottom: 0.75em;
+  --btn-padding-left-right: 1.5em;
   --btn-gap: 0.75em;
-  --btn-color: var(--link-color); // todo black / accent color stuff
+  --btn-background-color: var(--site-color);
+  --btn-color: var(--site-contrast);
+  --btn-font-size: clamp(14px, 4vw, 16px);
+  --btn-border-width: 2px;
 }
 
 // Default
 .btn {
   display: inline-flex;
+  justify-content: center;
+  position: relative;
   gap: var(--btn-gap, 0.75em);
   padding: var(--btn-padding-top-bottom, 0.50em) var(--btn-padding-left-right, 1.25em);
-  color: var(--site-contrast);
-  border: 2px solid transparent;
-  background-color: var(--btn-color);
-  font-variation-settings: "wght" 600;
-  border-radius: 10px;
+  border: var(--btn-border-width) solid transparent;
+  background-color: var(--btn-background-color);
+  font-family: 'Satoshi', -apple-system, 'Arial', sans-serif;
+  font-size: var(--btn-font-size);
+  font-variation-settings: "wght" 650;
+  color: var(--btn-color);
+  border-radius: 8px;
   text-decoration: none;
+  text-align: center;
+  appearance: none;
+  cursor: pointer;
+  overflow: hidden;
   .transit();
 
   // Hover
-  &:hover, &:focus {
-    --btn-color: var(--link-color-hover);
+  &:hover {
+    --btn-color: var(--site-accent);
+    --btn-overlay-opacity: 0.025;
+  }
+  &:active {
+    --btn-overlay-opacity: 0.05;
   }
 
   // Active
   &:is(.active, .nuxt-link-active) {
-    --btn-color: var(--link-color-active);
+    --btn-color: var(--site-accent);
   }
+
+  // Overlay
+  &::after {
+    content: "";
+    position: absolute;
+    inset: calc(var(--btn-border-width) * -1);
+    opacity: var(--btn-overlay-opacity, 0);
+    background: var(--site-contrast-110, #000);
+    pointer-events: none;
+    .transit();
+  }
+}
+
+// Colors
+.btn.btn--accent {
+  --btn-background-color: var(--site-accent);
+  --btn-color: var(--site-color);
+}
+
+// Sizes
+.btn.btn--l {
+  --btn-padding-top-bottom: 0.85em;
+  --btn-padding-left-right: 1.85em;
+}
+
+// Border Radii
+.btn.btn--border-radius-l {
+  border-radius: 4em;
 }
 
 // Border Button
 .btn.btn--border {
-  color: var(--btn-color);
-  border-color: var(--btn-color);
+  color: var(--btn-background-color);
+  border-color: var(--btn-background-color);
   background-color: transparent;
+
+  &::after {
+    display: none;
+  }
 }
 
 // Border Button (fill on hover)
 .btn.btn--border-fill {
-  color: var(--btn-color);
-  border-color: var(--btn-color);
+  color: var(--btn-background-color);
+  border-color: var(--btn-background-color);
   background-color: transparent;
 
-  // Active
-  &:is(.active, .nuxt-link-active) {
-    color: var(--site-contrast);
-    background-color: var(--btn-color);
+  // Hover
+  &:hover {
+    color: var(--btn-color);
+    background-color: var(--btn-background-color);
+  }
+}
+
+// Button Group
+.btn--group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+
+  &.fill {
+    .btn {
+      flex: 1 1 auto;
+    }
   }
 }

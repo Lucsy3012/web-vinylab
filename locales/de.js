@@ -4,6 +4,14 @@ export default {
     lastName: "Dietrich",
     fullName: "Lucas Dietrich",
   },
+  auth: {
+    login: {
+      title: "Einloggen",
+      email: "E-Mail",
+      password: "Passwort",
+      submit: "Einloggen",
+    },
+  },
   collections: {
     title: "Sammlungen",
     records: "Einträge",

@@ -1,6 +1,6 @@
 @import "../variables";
 
-@color-black:       #161B16;
+@color-black:       #1B1B1B;
 @color-fade:        #f5f5f5;
 @color-white:       #ffffff;
 @color-accent:      #EBE7DD;
@@ -10,6 +10,7 @@
 
   // Regular color
   --site-color:               @color-black;
+  --site-color-95:            fade(@color-black, 95);
   --site-color-90:            fade(@color-black, 90);
   --site-color-75:            fade(@color-black, 75);
   --site-color-66:            fade(@color-black, 66);
@@ -17,8 +18,8 @@
   --site-color-33:            fade(@color-black, 33);
   --site-color-25:            fade(@color-black, 25);
   --site-color-10:            fade(@color-black, 10);
-  --site-color-hover:         lighten(@color-black, 5%);
-  --site-color-active:        lighten(@color-black, 10%);
+  --site-color-hover:         darken(@color-black, 2.5%);
+  --site-color-active:        darken(@color-black, 5%);
 
   // Fade color
   /*
@@ -35,6 +36,7 @@
    */
 
   // Contrast color
+  --site-contrast-110:        #FFF;
   --site-contrast:            @color-white;
   --site-contrast-90:         fade(@color-white, 90);
   --site-contrast-75:         fade(@color-white, 75);
