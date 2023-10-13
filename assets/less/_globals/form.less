@@ -1,4 +1,7 @@
-
+form {
+  --input-padding-x: 1em;
+  --input-padding-y: 0.8em;
+}
 
 .form--group {
   position: relative;
@@ -15,13 +18,32 @@
         padding-left: calc(var(--input-icon-size) + var(--input-icon-gap) + var(--input-padding-x));
       }
     }
+    .icon {
+      position: absolute;
+      box-sizing: content-box;
+      height: 1.25em;
+      margin: 1px;
+      padding: var(--input-padding-y) var(--input-icon-gap) var(--input-padding-y) var(--input-padding-x);
+      opacity: 0.25;
+      .transit();
+    }
+
+    // States
+    &:has(input:hover) {
+      .icon {
+        opacity: 0.33;
+      }
+    }
+    &:has(input:focus) {
+      .icon {
+        opacity: 0.66;
+      }
+    }
   }
 }
 
 // Inputs
 input {
-  --input-padding-x: 1em;
-  --input-padding-y: 0.8em;
   font-family: 'Satoshi', -apple-system, 'Arial', sans-serif;
   font-size: clamp(14px, 4vw, 16px);
   font-variation-settings: "wght" 550;

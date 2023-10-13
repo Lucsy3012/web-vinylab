@@ -31,12 +31,12 @@ const vinylLabel = computed(() => {
         <picture>
           <source
             media="screen and (min-width: 768px)"
-            :srcset="`${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=120&h=120&fm=webp&q=90, ${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=240&h=24880&fm=webp&q=90`"
+            :srcset="`${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=120&h=120&fm=webp&q=90 1x ${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=240&h=24880&fm=webp&q=90 2x`"
             type="image/webp"
           />
           <source
             media="screen and (min-width: 768px)"
-            :srcset="`${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=120&h=120&fm=jpg&q=90, ${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=240&h=240&fm=jpg&q=90`"
+            :srcset="`${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=120&h=120&fm=jpg&q=90 1x ${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=240&h=240&fm=jpg&q=90 2x`"
             type="image/jpeg"
           />
           <img

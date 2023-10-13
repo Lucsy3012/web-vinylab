@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { PhUser, PhKey } from "@phosphor-icons/vue";
+
 definePageMeta({
   layout: "auth",
 });
@@ -47,7 +49,13 @@ async function loginWithEmail() {
               <h2 class="title-1">{{ $t("auth.login.title") }}</h2>
               <form @submit.prevent="loginWithEmail">
                 <!-- Email -->
-                <div class="form--group">
+                <div class="form--group input--icon">
+                  <PhUser
+                    class="icon"
+                    :size="20"
+                    color="#1B1B1B"
+                    weight="bold"
+                  />
                   <input
                     v-model="formEmail"
                     type="email"
@@ -56,7 +64,13 @@ async function loginWithEmail() {
                 </div>
 
                 <!-- Password -->
-                <div class="form--group">
+                <div class="form--group input--icon">
+                  <PhKey
+                    class="icon"
+                    :size="20"
+                    color="#1B1B1B"
+                    weight="bold"
+                  />
                   <input
                     v-model="formPassword"
                     type="password"
