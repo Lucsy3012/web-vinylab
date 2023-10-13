@@ -1,11 +1,27 @@
 
 
 .form--group {
+  position: relative;
   padding: 0.5em 0;
+
+  &.input--icon {
+    --input-icon-size: 1.25em;
+    --input-icon-gap: 0.5em;
+
+    input {
+      &:not([type="checkbox"]),
+      &:not([type="radio"]),
+      &:not([type="submit"]) {
+        padding-left: calc(var(--input-icon-size) + var(--input-icon-gap) + var(--input-padding-x));
+      }
+    }
+  }
 }
 
 // Inputs
 input {
+  --input-padding-x: 1em;
+  --input-padding-y: 0.8em;
   font-family: 'Satoshi', -apple-system, 'Arial', sans-serif;
   font-size: clamp(14px, 4vw, 16px);
   font-variation-settings: "wght" 550;
@@ -27,7 +43,7 @@ input {
   &:not([type="radio"]),
   &:not([type="submit"]) {
     width: 100%;
-    padding: 0.8em 1em;
+    padding: var(--input-padding-y) var(--input-padding-x);
   }
 
   &:focus {

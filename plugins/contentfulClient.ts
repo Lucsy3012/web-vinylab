@@ -1,4 +1,6 @@
 import { ContentfulClientApi, createClient } from "contentful";
+// import { createClient } from "contentful";
+import contentful from "contentful";
 
 declare module "#app" {
   interface NuxtApp {
@@ -6,19 +8,17 @@ declare module "#app" {
   }
 }
 
-type ContentfulConfig = {
-  space: string;
-  environment: string;
-  accessToken: string;
-  host: string;
-};
-
 export default defineNuxtPlugin((nuxtApp) => {
   // Importing runtime config
   const runtimeConfig = useRuntimeConfig();
 
   // Creating client
-  const client = createClient({
+  const createClientFunc =
+    process.env.NODE_ENV === "development"
+      ? createClient
+      : contentful.createClient;
+
+  const client = createClientFunc({
     accessToken: runtimeConfig.public.contentful.accessToken,
     space: runtimeConfig.public.contentful.spaceId,
     environment: runtimeConfig.public.contentful.environment,

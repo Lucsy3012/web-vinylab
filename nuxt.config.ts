@@ -18,11 +18,20 @@ const meta = {
 export default defineNuxtConfig({
   nitro: undefined,
   target: "static",
-  ssr: false,
+  ssr: true,
   pages: true,
 
   // Devtools
   devtools: true,
+
+  // Webpack
+  options: {
+    webpack: {
+      output: {
+        globalObject: "this",
+      },
+    },
+  },
 
   // Runtime config
   runtimeConfig: {

@@ -70,12 +70,19 @@ async function loginWithEmail() {
                 </div>
 
                 <!-- Submit -->
-                <div class="form--group">
+                <div class="form--group text--center">
                   <div class="btn--group fill">
                     <button class="btn" type="submit">
                       {{ $t("auth.login.title") }}
                     </button>
                   </div>
+                </div>
+
+                <!-- Request access -->
+                <div class="link--holder text--center mt2">
+                  <a href="mailto:support@lucasdietrich.de" class="text--link">
+                    {{ $t("auth.login.requestAccess") }}
+                  </a>
                 </div>
               </form>
             </Box>

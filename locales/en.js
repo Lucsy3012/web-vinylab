@@ -10,6 +10,7 @@ export default {
       email: "E-Mail",
       password: "Password",
       submit: "Log in",
+      requestAccess: "Request access here",
     },
   },
   collections: {
