@@ -1,13 +1,14 @@
 import { useSelected } from "@/stores/selected";
 import { Song } from "~/types/globalTypes";
-const supabase = useSupabaseClient();
 
 export function useComposition() {
-  function getSongs(selected) {
+  const supabase = useSupabaseClient();
+
+  function getSongs(selected: any) {
     return selected?.side?.fields?.songs as Song[];
   }
 
-  function getFileName(selected) {
+  function getFileName(selected: any) {
     const albumSlug = selected?.album?.fields?.slug;
     const sideSongsId = getSongs(selected).map((song) => {
       return song.sys.id;
@@ -15,7 +16,7 @@ export function useComposition() {
     return `${albumSlug}-${sideSongsId.join("-")}.mp3`;
   }
 
-  async function getStoredFile(selected) {
+  async function getStoredFile(selected: any) {
     const filename = getFileName(selected);
     const supabaseUrl =
       "https://ukdjuwjtiyxzfxecogan.supabase.co/storage/v1/object/public/Composed%20Songs/";

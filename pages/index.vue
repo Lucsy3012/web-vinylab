@@ -75,10 +75,12 @@ function selectAlbum(album: Album) {
             </ul>
             -->
 
-            <MediaPlayer
-              v-if="selected.side?.sys?.id"
-              :key="selected.side?.sys?.id ?? 'default'"
-            />
+            <ClientOnly>
+              <MediaPlayer
+                v-if="selected.side?.sys?.id"
+                :key="selected.side?.sys?.id ?? 'default'"
+              />
+            </ClientOnly>
           </div>
         </div>
       </div>
