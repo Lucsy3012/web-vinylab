@@ -15,7 +15,7 @@ export default {
   },
   collections: {
     title: "Sammlungen",
-    records: "Einträge",
+    records: "Alben",
   },
   albums: {
     title: "Alben",

@@ -7,7 +7,7 @@ const currentYear = currentDate.getFullYear();
 // TODO: Change meta data
 const meta = {
   author: "Lucas Dietrich",
-  title: "Vinylab - Vinyl Platform",
+  title: "Vinylab",
   description: "Your vinyl collection in the cloud.",
   image: "/og-image/og-image-home.jpg",
   url: "https://vinylab.lucasdietrich.com",
@@ -73,13 +73,13 @@ export default defineNuxtConfig({
   // Global page headers: https://nuxt.com/docs/api/configuration/nuxt-config#head
   app: {
     head: {
-      titleTemplate: "%s - " + meta.title,
+      titleTemplate: "%s • " + meta.title,
       meta: [
         { charset: "utf-8" },
         { name: "author", content: meta.author },
         { name: "robots", content: "index, follow" },
         { name: "application-name", content: meta.description },
-        { name: "theme-color", content: "#FFFFFF" },
+        { name: "theme-color", content: "#EBE7DD" },
         {
           name: "viewport",
           content:

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useCollection } from "@/stores/collection";
+import { useArtists } from "@/stores/artists";
 import { useSelected } from "@/stores/selected";
 import { useSettings } from "@/stores/settings";
 
-import { Album } from "~~/types/globalTypes";
+import { Album, AlbumByArtist, Artist } from "~~/types/globalTypes";
 
 // Locales
 const localePath = useLocalePath();
@@ -13,6 +14,9 @@ const { t, locale } = useI18n();
 const { getEntries } = useContentful();
 
 const collection = useCollection();
+const artists = useArtists();
+
+// Calls
 const albums = await useAsyncData("content", async () => {
   // Use stored data
   if (await collection.check()) {
@@ -27,8 +31,32 @@ const albums = await useAsyncData("content", async () => {
     locale: unref(locale),
   });
 
+  const getArtists = await getEntries({
+    content_type: "artist",
+    order: ["fields.artistName"],
+    limit: 1000,
+    locale: unref(locale),
+  });
+
+  // Align artists data with albums into new array
+  const sortedData = getArtists.items.map((artist) => {
+    const albums = entries.items.filter((album) => {
+      const albumArtists = album.fields.artists as any;
+      return albumArtists.some(
+        (albumArtist: Artist) => albumArtist.sys.id === artist.sys.id,
+      );
+    });
+
+    return {
+      ...artist,
+      albums,
+    };
+  });
+
   // Store data
   await collection.set(entries);
+  await collection.setSortedByArtists(sortedData);
+  await artists.set(getArtists);
 
   return entries;
 });
@@ -49,46 +77,58 @@ function selectAlbum(album: Album) {
       <div class="stretch">
         <div class="row">
           <div class="col col-12">
-            <h1 class="title-1">{{ $t("albums.title") }}</h1>
-            <div
-              class="mt2 album-controller"
-              :class="`album-controller--${settings.display}`"
-            >
-              <AlbumItem
-                v-for="album in albums.data.value.items as Album[]"
-                :album="album"
-                @click="selectAlbum(album)"
-                :key="album.sys.id"
-                :class="{ selected: album.sys.id === selected?.album?.sys?.id }"
-              />
+            <!-- Display: Grid -->
+            <div class="artist-list">
+              <div class="artist-collection">
+                <CollectionTitle
+                  v-for="artist in collection.sortedByArtists as AlbumByArtist[]"
+                  :name="artist.fields.artistName as string"
+                  :avatar="artist.fields.avatar"
+                  :records="artist?.albums?.length"
+                  :key="artist.sys.id"
+                />
+                <div
+                  class="mt6 mt7-m album-controller"
+                  :class="`album-controller--${settings.display}`"
+                >
+                  <AlbumItem
+                    v-for="album in albums.data.value.items as Album[]"
+                    :album="album"
+                    @click="selectAlbum(album)"
+                    :key="album.sys.id"
+                    :class="{
+                      selected: album.sys.id === selected?.album?.sys?.id,
+                    }"
+                  />
+                </div>
+              </div>
             </div>
-            <!--
-            <ul class="mt2 album-controller">
-              <li
-                v-for="album in albums.data.value.items as Album[]"
-                @click="selectAlbum(album)"
-                :key="album.sys.id"
-                :class="{ selected: album.sys.id === selected?.album?.sys?.id }"
-              >
-                {{ album.fields.title }}
-              </li>
-            </ul>
-            -->
-
-            <ClientOnly>
-              <MediaPlayer
-                v-if="selected.side?.sys?.id"
-                :key="selected.side?.sys?.id ?? 'default'"
-              />
-            </ClientOnly>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- Media Player -->
+    <ClientOnly>
+      <MediaPlayer
+        v-if="selected.side?.sys?.id"
+        :key="selected.side?.sys?.id ?? 'default'"
+      />
+    </ClientOnly>
   </div>
 </template>
 
 <style lang="less" scoped>
+.artist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5em;
+
+  .artist-collection {
+    padding: 2em 0;
+  }
+}
+
 .album-controller {
   li.selected {
     font-weight: bold;

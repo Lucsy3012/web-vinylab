@@ -48,3 +48,12 @@ export type Album = {
     miscellaneousInformation?: EntryFieldTypes.Text;
   };
 };
+
+export type AlbumByArtist = {
+  sys: EntrySys;
+  fields: {
+    artistName: EntryFieldTypes.Text;
+    avatar: Asset;
+  };
+  albums: Album[];
+};

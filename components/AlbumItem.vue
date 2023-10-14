@@ -31,13 +31,13 @@ const vinylLabel = computed(() => {
         <picture>
           <source
             media="screen and (min-width: 768px)"
-            :srcset="`${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=120&h=120&fm=webp&q=90 1x ${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=240&h=24880&fm=webp&q=90 2x`"
+            :srcset="`https:${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=120&h=120&fm=webp&q=90 1x, https:${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=240&h=240&fm=webp&q=90 2x`"
             type="image/webp"
           />
           <source
             media="screen and (min-width: 768px)"
-            :srcset="`${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=120&h=120&fm=jpg&q=90 1x ${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=240&h=240&fm=jpg&q=90 2x`"
-            type="image/jpeg"
+            :srcset="`https:${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=120&h=120&fm=jpg&q=90 1x, https:${props.album.fields?.albumCoverFront?.fields?.file?.url}?w=240&h=240&fm=jpg&q=90 2x`"
+            type="image/jpg"
           />
           <img
             :src="props.album.fields?.albumCoverFront?.fields?.file?.url"
