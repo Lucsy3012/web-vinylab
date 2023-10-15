@@ -2,8 +2,8 @@
 
 <template>
   <div>
-    <!-- todo add header + navigation -->
+    <Header />
     <NuxtPage />
-    <Footer />
+    <!-- <Footer /> -->
   </div>
 </template>
