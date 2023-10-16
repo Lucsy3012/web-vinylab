@@ -145,6 +145,7 @@ onMounted(() => {
     color: var(--site-color-50);
     z-index: 1;
 
+    &:hover,
     &.active {
       color: var(--site-color);
     }
