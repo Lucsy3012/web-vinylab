@@ -6,6 +6,7 @@ import { useCompound } from "~/composables/useCompound";
 import { Artist, Side, Song } from "~/types/globalTypes";
 import { useAudioFiles } from "~/composables/useAudioFiles";
 import { useComposition } from "~/composables/useComposition";
+import { PhArrowsClockwise } from "@phosphor-icons/vue";
 
 const selected = useSelected();
 const settings = useSettings();
@@ -130,21 +131,19 @@ watch(
 
 // Updates
 onUpdated(() => {
-  // Change color
-  const body = document.querySelector("body");
-
+  // Change color & settings
   if (selected?.album?.fields?.moodColor) {
-    body?.style.setProperty(
+    document.documentElement.style.setProperty(
       "--site-accent",
       selected?.album?.fields?.moodColor.toString(),
     );
   }
   if (settings?.rpm) {
-    body?.style.setProperty(
+    document.documentElement.style.setProperty(
       "--album-vinyl-rotation-rpm",
       (settings?.rpm ?? 45).toString(),
     );
-    body?.style.setProperty(
+    document.documentElement.style.setProperty(
       "--album-vinyl-rotation-time",
       `${60 / settings?.rpm}s`,
     );
@@ -175,7 +174,7 @@ const albumVinylRotation = computed(
               <!-- Current Album -->
               <AlbumCover
                 :album="selected.album"
-                :size="66.66"
+                :size="67"
                 :rotation="'constant'"
               />
               <div class="album-title--container">
@@ -186,6 +185,8 @@ const albumVinylRotation = computed(
                   {{ artistsList }}
                 </div>
               </div>
+
+              <span class="divider" />
 
               <!-- todo -->
               <div class="media-player-bar">
@@ -207,38 +208,51 @@ const albumVinylRotation = computed(
               <Scrubber v-if="!!mediaControls?.volume" v-model="mediaControls.volume" :max="1" />
               -->
 
+              <span class="divider" />
+
+              <!-- RPM -->
+              <div class="media-player-rpm-container">
+                <div class="rpm-controller">
+                  <div
+                    v-for="rpm in [33, 45]"
+                    class="rpm eyebrow-1 text--upper"
+                    :class="{ selected: settings?.rpm === rpm }"
+                    @click="settings.setRPM(rpm)"
+                    :key="rpm"
+                    tabindex="0"
+                  >
+                    {{ rpm }} RPM
+                  </div>
+                </div>
+              </div>
+
+              <span class="divider" />
+
               <div class="media-player-sides-container">
-                <div>Sides:</div>
+                <div class="side playing-side">
+                  {{ selected?.side?.fields?.side }}
+
+                  <PhArrowsClockwise
+                    :size="18"
+                    color="#1B1B1B"
+                    weight="bold"
+                    class="icon"
+                  />
+                </div>
                 <ul class="sides-controller">
                   <li
                     v-for="side in selected?.sides as Side[]"
                     :key="side.sys.id"
-                    @click="selectSide(side)"
+                    class="side"
                     :class="{
                       selected: side.sys.id === selected?.side?.sys?.id,
                     }"
+                    @click="selectSide(side)"
+                    tabindex="0"
                   >
                     {{ side?.fields?.side }}
                   </li>
                 </ul>
-              </div>
-
-              <div class="media-player-rpm-container">
-                <div>RPMs:</div>
-                <div class="rpm-controller">
-                  <div
-                    @click="settings.setRPM(33)"
-                    :class="{ selected: settings?.rpm === 33 }"
-                  >
-                    33 RPM
-                  </div>
-                  <div
-                    @click="settings.setRPM(45)"
-                    :class="{ selected: settings?.rpm === 45 }"
-                  >
-                    45 RPM
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -299,10 +313,11 @@ const albumVinylRotation = computed(
   // Header
   .media-player-controller {
     --album-width: 66.66px;
+    --gap: 2em;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    gap: 2em;
+    gap: var(--gap);
     padding: 45px 45px 35px;
 
     // todo change for animation
@@ -319,16 +334,117 @@ const albumVinylRotation = computed(
     flex: 1 1 auto;
   }
 
+  .album-title--container {
+    min-width: 200px;
+  }
+
+  span.divider {
+    display: block;
+    width: 1px;
+    height: 40px;
+    border-left: 1px solid var(--site-color-25);
+  }
+
   .songs,
-  .sides-controller,
-  .rpm-controller {
+  .sides-controller {
     .selected {
       --transition-property: color;
       --transition-duration: 0.5s;
       --transition-timing-function: ease-in-out;
-      font-weight: bold;
+      font-variation-settings: "wght" 750;
       color: var(--site-color);
       .transit();
+    }
+  }
+
+  // RPM
+  .rpm-controller {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    place-content: center;
+    gap: 0.5em;
+
+    .rpm {
+      --transition-property: color;
+      --transition-duration: 0.15s;
+      --transition-timing-function: ease-in-out;
+      color: var(--site-color-50);
+      cursor: pointer;
+      .transit();
+
+      &:hover {
+        color: var(--site-color-75);
+      }
+      &.selected {
+        &,
+        &:hover {
+          color: var(--site-color);
+        }
+      }
+    }
+  }
+
+  // Sides
+  .media-player-sides-container {
+    font-size: 2em;
+    position: relative;
+    width: 1.25em;
+    text-align: left;
+
+    .sides-controller {
+      display: flex;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      padding: 0.6em 0.8em;
+      gap: 0.25em;
+      background-color: var(--site-accent);
+      translate: 0.75em -50%;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      border-radius: 1em;
+      .transit();
+    }
+    .side {
+      --transition-property: color;
+      --transition-duration: 0.15s;
+      --transition-timing-function: ease-in-out;
+      font-variation-settings: "wght" 700;
+      width: 1.25em;
+      cursor: pointer;
+      color: var(--site-color-25);
+      .transit();
+
+      &:hover {
+        color: var(--site-color-50);
+      }
+      &.selected,
+      &.playing-side {
+        color: var(--site-color-75);
+      }
+      &.playing-side {
+        position: relative;
+
+        .icon {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 0.5em;
+          height: 0.5em;
+          opacity: 0.5;
+        }
+      }
+    }
+
+    .playing-side:hover ~ .sides-controller,
+    .playing-side:focus ~ .sides-controller,
+    &:focus-within .sides-controller,
+    .sides-controller:hover {
+      translate: 0.5em -50%;
+      opacity: 1;
+      pointer-events: initial;
     }
   }
 }

@@ -114,22 +114,22 @@ const vinylLabel = computed(() => {
 
 @property --album-vinyl-rotation-constant {
   syntax: "<angle>";
-  inherits: false;
+  inherits: true;
   initial-value: 0deg;
 }
 @property --album-vinyl-rotation-rpm {
   syntax: "<number>";
-  inherits: false;
+  inherits: true;
   initial-value: 45;
 }
 @property --album-vinyl-rotation-time {
   syntax: "<time>";
-  inherits: false;
+  inherits: true;
   initial-value: 1.33s;
 }
 @property --album-vinyl-rotation {
   syntax: "<number>";
-  inherits: false;
+  inherits: true;
   initial-value: 0;
 }
 
