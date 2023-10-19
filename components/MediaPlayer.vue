@@ -7,6 +7,7 @@ import { Artist, Side, Song } from "~/types/globalTypes";
 import { useAudioFiles } from "~/composables/useAudioFiles";
 import { useComposition } from "~/composables/useComposition";
 import { PhArrowsClockwise } from "@phosphor-icons/vue";
+import MediaPlayerPlayController from "~/components/MediaPlayerPlayController.vue";
 
 const selected = useSelected();
 const settings = useSettings();
@@ -18,6 +19,11 @@ const currentAudioFile = ref<HTMLAudioElement>();
 // Selecting side
 function selectSide(side: Side) {
   selected.setSide(side);
+}
+
+// Displaying times
+function formatDuration(seconds: number) {
+  return new Date(1000 * seconds).toISOString().slice(14, 19);
 }
 
 // Compose merged audio file
@@ -190,19 +196,23 @@ const albumVinylRotation = computed(
 
               <!-- todo -->
               <div class="media-player-bar">
-                <audio ref="currentAudioFile" controls></audio>
-                <button
+                <MediaPlayerPlayController
+                  :playing="mediaControls.playing"
                   @click="mediaControls.playing = !mediaControls?.playing"
-                >
-                  Play / Pause
-                </button>
+                />
+                <audio ref="currentAudioFile" controls></audio>
                 <button @click="mediaControls.muted = !mediaControls?.muted">
                   Mute
                 </button>
-                <span
-                  >{{ mediaControls?.currentTime }} /
-                  {{ mediaControls?.duration }}</span
-                >
+                <span class="duration">
+                  <span class="current-time">{{
+                    formatDuration(mediaControls?.currentTime)
+                  }}</span>
+                  <span class="separator">/</span>
+                  <span class="full-duration">{{
+                    formatDuration(mediaControls?.duration)
+                  }}</span>
+                </span>
               </div>
               <!--
               <Scrubber v-if="!!mediaControls?.volume" v-model="mediaControls.volume" :max="1" />
@@ -332,6 +342,20 @@ const albumVinylRotation = computed(
 
   .media-player-bar {
     flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+
+    .duration {
+      display: flex;
+      gap: 0.5em;
+      color: var(--site-color-50);
+      font-variation-settings: "wght" 700;
+
+      .current-time {
+        color: var(--site-color);
+      }
+    }
   }
 
   .album-title--container {
@@ -412,7 +436,7 @@ const albumVinylRotation = computed(
       --transition-duration: 0.15s;
       --transition-timing-function: ease-in-out;
       font-variation-settings: "wght" 700;
-      width: 1.25em;
+      min-width: 1.25em;
       cursor: pointer;
       color: var(--site-color-25);
       .transit();
