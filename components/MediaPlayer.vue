@@ -3,7 +3,7 @@ import { useSelected } from "@/stores/selected";
 import { useSettings } from "@/stores/settings";
 import { useMediaControls } from "@vueuse/core";
 import { useCompound } from "~/composables/useCompound";
-import { Artist, Side, Song } from "~/types/globalTypes";
+import { Artist, Side } from "~/types/globalTypes";
 import { useAudioFiles } from "~/composables/useAudioFiles";
 import { useComposition } from "~/composables/useComposition";
 import { PhArrowsClockwise } from "@phosphor-icons/vue";
@@ -30,37 +30,28 @@ function formatDuration(seconds: number) {
 const composedSideLoading = ref(true);
 const compositionSongs = composition.getSongs(selected);
 const compositionName = composition.getFileName(selected);
-const storedFile = ref(undefined);
+const compositionUrl = ref("");
 
 const composingSide = await useAsyncData("composing-side", async () => {
-  try {
-    storedFile.value = await composition.getStoredFile(selected);
-  } catch {
-    console.log("No stored file found");
+  const fileStored = await composition.getStoredFile(selected);
+
+  // Get URL from Supabase / or compose on the fly
+  if (fileStored) {
+    compositionUrl.value = fileStored;
+  } else {
+    console.log("File has been composed on the fly");
+    // todo include loading screen
+    compositionUrl.value =
+      (await audioFiles.getComposedSideUrls(selected, compositionSongs)) ?? "";
   }
 
-  const createdFile = await audioFiles.getComposedSideUrls(
-    selected,
-    compositionSongs,
-  );
-
-  // Get composed song url (first check if it's already stored, otherwise compose it)
-  const url = storedFile.value || createdFile;
-
-  // Create composed side details
-  console.log("url", url);
-  if (url?.includes("blob:")) {
-    console.log(
-      "File has been composed on the fly, todo uploading to supabase",
-    );
-  }
-
+  // Get lengths for each song
   const lengths = (await audioFiles.getDurations(compositionSongs)) as number[];
   const lengthsCompounded = useCompound().compoundArray(lengths);
 
   // Set composed side details
   await selected.setComposedSide({
-    url,
+    url: compositionUrl.value,
     name: compositionName,
     lengths,
     lengthsCompounded,
@@ -423,13 +414,28 @@ const albumVinylRotation = computed(
       right: 0;
       padding: 0.6em 0.8em;
       gap: 0.25em;
-      background-color: var(--site-accent);
       translate: 0.75em -50%;
       text-align: center;
       opacity: 0;
       pointer-events: none;
       border-radius: 1em;
       .transit();
+
+      // simulate 50% site-accent opacity
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+      }
+      &::before {
+        background-color: var(--site-contrast-50);
+        z-index: -1;
+      }
+      &::after {
+        background-color: var(--site-accent);
+        z-index: -2;
+      }
     }
     .side {
       --transition-property: color;

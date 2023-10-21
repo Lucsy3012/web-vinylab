@@ -79,20 +79,27 @@ function selectAlbum(album: Album) {
           <div class="col col-12">
             <!-- Display: Grid -->
             <div class="artist-list">
-              <div class="artist-collection">
+              <!-- Each artist -->
+              <div
+                class="artist-collection"
+                v-for="artist in collection.sortedByArtists as AlbumByArtist[]"
+                :key="artist.sys.id"
+              >
+                <!-- Artist avatar -->
                 <CollectionTitle
-                  v-for="artist in collection.sortedByArtists as AlbumByArtist[]"
                   :name="artist.fields.artistName as string"
                   :avatar="artist.fields.avatar"
                   :records="artist?.albums?.length"
-                  :key="artist.sys.id"
                 />
+
+                <!-- Albums -->
                 <div
+                  v-if="artist.albums.length > 0"
                   class="mt6 mt7-m album-controller"
                   :class="`album-controller--${settings.display}`"
                 >
                   <AlbumItem
-                    v-for="album in albums.data.value.items as Album[]"
+                    v-for="album in artist.albums as Album[]"
                     :album="album"
                     @click="selectAlbum(album)"
                     :key="album.sys.id"
@@ -100,6 +107,19 @@ function selectAlbum(album: Album) {
                       selected: album.sys.id === selected?.album?.sys?.id,
                     }"
                   />
+                </div>
+
+                <!-- No Albums -->
+                <div
+                  v-else
+                  class="mt6 mt7-m"
+                  :class="`no-album-notice--${settings.display}`"
+                >
+                  <p
+                    class="no-album-notice title-4 --site-color-75 text--center"
+                  >
+                    {{ t("collections.noAlbums") }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -119,6 +139,9 @@ function selectAlbum(album: Album) {
 </template>
 
 <style lang="less" scoped>
+@import (reference) "../assets/less/variables.less";
+@import (reference) "../assets/less/shorthands.less";
+
 .artist-list {
   display: flex;
   flex-direction: column;
@@ -141,5 +164,11 @@ function selectAlbum(album: Album) {
     flex-wrap: wrap;
     gap: 2em;
   }
+}
+
+.no-album-notice {
+  background-color: var(--site-contrast-33);
+  padding: 3em 2em;
+  .--rounded-l();
 }
 </style>

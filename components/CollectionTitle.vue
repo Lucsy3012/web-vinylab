@@ -31,7 +31,7 @@ const props = defineProps<{
       </picture>
     </div>
     <div class="text--holder">
-      <div v-if="props.records" class="eyebrow-1 text--upper records">
+      <div class="eyebrow-1 text--upper records">
         {{ props.records }} {{ $t("collections.records") }}
       </div>
       <h2 class="title-1">{{ name }}</h2>

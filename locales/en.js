@@ -16,6 +16,7 @@ export default {
   collections: {
     title: "Collections",
     records: "Records",
+    noAlbums: "No albums found",
   },
   albums: {
     title: "Albums",

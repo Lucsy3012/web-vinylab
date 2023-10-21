@@ -47,7 +47,7 @@ export function useAudioFilesService() {
     if (!songs) return;
 
     const allSongs = songs.map((song) => {
-      return song.fields?.file?.url;
+      return song.fields?.file?.url ?? "";
     });
 
     const concattedSongUrl: string = await concat(allSongs as string[]);
