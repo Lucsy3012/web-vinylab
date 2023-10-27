@@ -31,26 +31,17 @@ watch([scrubbing, elementX], () => {
 </script>
 
 <template>
-  <!-- todo customize -->
-  <div
-    ref="scrubber"
-    class="relative h-2 rounded cursor-pointer select-none bg-black dark:bg-white dark:bg-opacity-10 bg-opacity-20"
-    @mousedown="scrubbing = true"
-  >
-    <div class="relative overflow-hidden h-full w-full rounded">
+  <div ref="scrubber" class="scrubber-container" @mousedown="scrubbing = true">
+    <div class="scrubber-outer">
       <div
-        class="h-full absolute opacity-30 left-0 top-0 bg-emerald-700 w-full rounded"
+        class="scrubber-inner"
         :style="{ transform: `translateX(${(secondary / max) * 100 - 100}%)` }"
       />
       <div
-        class="relative h-full w-full bg-emerald-500 rounded"
         :style="{ transform: `translateX(${(value / max) * 100 - 100}%)` }"
       />
     </div>
-    <div
-      class="absolute inset-0 hover:opacity-100 opacity-0"
-      :class="{ '!opacity-100': scrubbing }"
-    >
+    <div class="scrubber-pointer" :class="{ active: scrubbing }">
       <slot
         :pending-value="pendingValue"
         :position="`${Math.max(0, Math.min(elementX, elementWidth))}px`"
@@ -58,3 +49,50 @@ watch([scrubbing, elementX], () => {
     </div>
   </div>
 </template>
+
+<style lang="less" scoped>
+.scrubber-container {
+  position: relative;
+  height: 6px;
+  background: var(--site-color-25);
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.scrubber-outer {
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.scrubber-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: var(--site-color);
+  border-radius: 10px;
+
+  + div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: var(--site-color);
+    border-radius: 10px;
+  }
+}
+
+.scrubber-pointer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+
+  &:hover,
+  &.active {
+    opacity: 1;
+  }
+}
+</style>

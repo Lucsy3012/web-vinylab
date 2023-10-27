@@ -175,7 +175,10 @@ const albumVinylRotation = computed(
                 :rotation="'constant'"
               />
               <div class="album-title--container">
-                <div class="title-4 --site-color">
+                <div
+                  class="title-4 --site-color"
+                  :title="selected?.song?.fields?.title"
+                >
                   {{ selected?.song?.fields?.title }}
                 </div>
                 <div class="eyebrow-2 --site-color-50 mt1">
@@ -191,23 +194,39 @@ const albumVinylRotation = computed(
                   :playing="mediaControls.playing"
                   @click="mediaControls.playing = !mediaControls?.playing"
                 />
+                <div class="media-player-bar-track">
+                  <Scrubber
+                    v-model="mediaControls.currentTime"
+                    class="media-player-bar-scrubber"
+                    :max="mediaControls.duration"
+                  />
+                  <div class="media-player-bar-indicators">
+                    <span
+                      v-for="indicator in selected.composedSide
+                        .lengthsCompounded"
+                      :key="indicator"
+                      class="indicator"
+                      :style="`left: ${
+                        (100 / mediaControls.duration) * indicator
+                      }%`"
+                    />
+                  </div>
+                </div>
                 <audio ref="currentAudioFile" controls></audio>
-                <button @click="mediaControls.muted = !mediaControls?.muted">
-                  Mute
-                </button>
+
+                <!-- Display time -->
                 <span class="duration">
-                  <span class="current-time">{{
-                    formatDuration(mediaControls?.currentTime)
-                  }}</span>
+                  <span class="current-time">
+                    {{ formatDuration(mediaControls?.currentTime) }}
+                  </span>
                   <span class="separator">/</span>
-                  <span class="full-duration">{{
-                    formatDuration(mediaControls?.duration)
-                  }}</span>
+                  <span class="full-duration">
+                    {{ formatDuration(mediaControls?.duration) }}
+                  </span>
                 </span>
               </div>
-              <!--
-              <Scrubber v-if="!!mediaControls?.volume" v-model="mediaControls.volume" :max="1" />
-              -->
+
+              <MediaPlayerAudioController :mediaControls="mediaControls" />
 
               <span class="divider" />
 
@@ -282,6 +301,9 @@ const albumVinylRotation = computed(
 @import (reference) "../assets/less/variables.less";
 @import (reference) "../assets/less/shorthands.less";
 
+audio {
+  display: none;
+}
 .media-player-container {
   --section-padding: 0;
   // --gap-row: 0;
@@ -337,6 +359,35 @@ const albumVinylRotation = computed(
     align-items: center;
     gap: var(--gap);
 
+    .media-player-bar-track {
+      position: relative;
+      flex: 1 1 auto;
+      border-radius: 10px;
+      overflow: hidden;
+
+      .media-player-bar-scrubber {
+        width: 100%;
+      }
+      .media-player-bar-indicators {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+
+        > .indicator {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 4px;
+          height: 100%;
+          background-color: var(--site-accent-75);
+          translate: -50% 0;
+
+          &:last-child {
+            display: none;
+          }
+        }
+      }
+    }
     .duration {
       display: flex;
       gap: 0.5em;
@@ -350,7 +401,13 @@ const albumVinylRotation = computed(
   }
 
   .album-title--container {
-    min-width: 200px;
+    width: 240px;
+
+    * {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 
   span.divider {
