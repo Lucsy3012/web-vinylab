@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { useSettings } from "@/stores/settings";
 import {
   PhSpeakerSimpleHigh,
   PhSpeakerSimpleLow,
   PhSpeakerSimpleX,
 } from "@phosphor-icons/vue";
+
+const settings = useSettings();
 
 export type MediaControlsAudio = {
   volume: number;
@@ -19,6 +22,13 @@ watch(
   () => props.mediaControls.volume,
   () => {
     props.mediaControls.muted = props.mediaControls.volume === 0;
+  },
+);
+
+watch(
+  () => props.mediaControls?.volume,
+  () => {
+    settings.setVolume(props.mediaControls?.volume ?? 0.75);
   },
 );
 </script>
@@ -55,7 +65,7 @@ watch(
   </div>
 </template>
 
-<style scoped lang="less">
+<style lang="less" scoped>
 .media-player-audio-controller {
   display: flex;
   flex-wrap: nowrap;

@@ -8,6 +8,7 @@ import { useAudioFiles } from "~/composables/useAudioFiles";
 import { useComposition } from "~/composables/useComposition";
 import { PhArrowsClockwise } from "@phosphor-icons/vue";
 import MediaPlayerPlayController from "~/components/MediaPlayerPlayController.vue";
+import MediaPlayerDuration from "~/components/MediaPlayerDuration.vue";
 
 const selected = useSelected();
 const settings = useSettings();
@@ -19,11 +20,6 @@ const currentAudioFile = ref<HTMLAudioElement>();
 // Selecting side
 function selectSide(side: Side) {
   selected.setSide(side);
-}
-
-// Displaying times
-function formatDuration(seconds: number) {
-  return new Date(1000 * seconds).toISOString().slice(14, 19);
 }
 
 // Compose merged audio file
@@ -78,8 +74,8 @@ const composingSide = await useAsyncData("composing-side", async () => {
   }
 
   // Setting up default/user media controls
-  mediaControls.playing.value = false;
-  mediaControls.volume.value = settings?.volume ?? 1;
+  mediaControls.playing.value = true;
+  mediaControls.volume.value = settings?.volume ?? 0.75;
   updateRate();
 
   return {
@@ -215,15 +211,7 @@ const albumVinylRotation = computed(
                 <audio ref="currentAudioFile" controls></audio>
 
                 <!-- Display time -->
-                <span class="duration">
-                  <span class="current-time">
-                    {{ formatDuration(mediaControls?.currentTime) }}
-                  </span>
-                  <span class="separator">/</span>
-                  <span class="full-duration">
-                    {{ formatDuration(mediaControls?.duration) }}
-                  </span>
-                </span>
+                <MediaPlayerDuration :mediaControls="mediaControls" />
               </div>
 
               <MediaPlayerAudioController :mediaControls="mediaControls" />
@@ -379,23 +367,13 @@ audio {
           bottom: 0;
           width: 4px;
           height: 100%;
-          background-color: var(--site-accent-75);
+          background-color: #0006;
           translate: -50% 0;
 
           &:last-child {
             display: none;
           }
         }
-      }
-    }
-    .duration {
-      display: flex;
-      gap: 0.5em;
-      color: var(--site-color-50);
-      font-variation-settings: "wght" 700;
-
-      .current-time {
-        color: var(--site-color);
       }
     }
   }
@@ -476,23 +454,8 @@ audio {
       opacity: 0;
       pointer-events: none;
       border-radius: 1em;
+      background-color: var(--site-contrast);
       .transit();
-
-      // simulate 50% site-accent opacity
-      &::before,
-      &::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-      }
-      &::before {
-        background-color: var(--site-contrast-50);
-        z-index: -1;
-      }
-      &::after {
-        background-color: var(--site-accent);
-        z-index: -2;
-      }
     }
     .side {
       --transition-property: color;

@@ -7,6 +7,7 @@ export const useSettings = defineStore("settings", {
     rpm: <number>45,
     volume: <number>0.75,
     playing: <boolean>false,
+    filter: "",
   }),
 
   actions: {
@@ -27,6 +28,9 @@ export const useSettings = defineStore("settings", {
     },
     async togglePlaying(): Promise<void> {
       this.playing = !this.playing;
+    },
+    async setFilter(value: string): Promise<void> {
+      this.filter = value;
     },
   },
 });

@@ -28,4 +28,15 @@ export default {
     title: "Songs",
     titleAll: "Alle Songs",
   },
+  filter: {
+    label: "Filter",
+  },
+  display: {
+    label: "Darstellung:",
+    modes: {
+      grid: "Kacheln",
+      list: "Liste",
+      coverflow: "Coverflow",
+    },
+  },
 };

@@ -5,6 +5,7 @@ import { useSelected } from "@/stores/selected";
 import { useSettings } from "@/stores/settings";
 
 import { Album, AlbumByArtist, Artist } from "~~/types/globalTypes";
+import DisplayController from "~/components/DisplayController.vue";
 
 // Locales
 const localePath = useLocalePath();
@@ -73,6 +74,18 @@ function selectAlbum(album: Album) {
 
 <template>
   <div>
+    <section>
+      <div class="stretch">
+        <div class="row align-items--center">
+          <div class="col col-6">
+            <FilterBar />
+          </div>
+          <div class="col col-6">
+            <DisplayController />
+          </div>
+        </div>
+      </div>
+    </section>
     <section>
       <div class="stretch">
         <div class="row">
@@ -163,6 +176,12 @@ function selectAlbum(album: Album) {
     display: flex;
     flex-wrap: wrap;
     gap: 2em;
+  }
+
+  &.album-controller--list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 }
 

@@ -102,7 +102,7 @@ const vinylLabel = computed(() => {
   .album-vinyl-cut-out {
     width: 3.15%;
     height: 3.15%;
-    background-color: var(--site-accent);
+    background-color: var(--site-contrast);
     z-index: 3;
   }
 
