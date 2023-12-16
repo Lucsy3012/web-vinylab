@@ -48,6 +48,19 @@ const albums = await useAsyncData("content", async () => {
       );
     });
 
+    // Add custom value for easier filtering
+    albums.map((album: Album) => {
+      let albumArtists: string[] = [];
+
+      album.fields.artists.forEach((artist: Artist) => {
+        albumArtists.push(artist.fields.artistName.toString());
+      });
+
+      const artists = albumArtists.join(", ");
+
+      album.fields.filterValue = `${artists} ${album.fields.title}`;
+    });
+
     return {
       ...artist,
       albums,
@@ -73,6 +86,29 @@ function selectAlbum(album: Album) {
 
 // Coverflow specific
 const coverflowCount = ref(0);
+
+// Filter
+const filter = useFilter();
+const filteredAlbumsByArtist = ref(collection.sortedByArtists);
+const filteredAlbums = ref(filteredAlbumsByArtist.value);
+
+watch(
+  () => settings.filter,
+  () => {
+    // Return filtered albums by artists
+    filteredAlbumsByArtist.value = filter.filterNameAndArtist(
+      collection.sortedByArtists,
+      settings.filter,
+    );
+
+    // Return filtered albums without artists
+    filteredAlbums.value = filteredAlbumsByArtist.value
+      .map((artist: AlbumByArtist) => {
+        return artist.albums;
+      })
+      .flat();
+  },
+);
 </script>
 
 <template>
@@ -102,7 +138,7 @@ const coverflowCount = ref(0);
               <!-- Each artist -->
               <div
                 class="artist-collection"
-                v-for="artist in collection.sortedByArtists as AlbumByArtist[]"
+                v-for="artist in filteredAlbumsByArtist as AlbumByArtist[]"
                 :key="artist.sys.id"
               >
                 <!-- Artist avatar -->
@@ -156,7 +192,7 @@ const coverflowCount = ref(0);
             <div class="album-controller album-controller--coverflow">
               <!-- Albums -->
               <AlbumItem
-                v-for="(album, index) in collection.data.items as Album[]"
+                v-for="(album, index) in filteredAlbums as Album[]"
                 :album="album"
                 @click="coverflowCount = index"
                 @dblclick="selectAlbum(album)"

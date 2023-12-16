@@ -3,7 +3,6 @@ import { useSettings } from "@/stores/settings";
 import { Album, Artist, Side } from "~~/types/globalTypes";
 
 const settings = useSettings();
-const displayType = ref(settings?.display); // make watchable
 
 const props = defineProps<{
   album: Album;
@@ -156,6 +155,10 @@ const lastSide = computed(() => {
 
     .album-title--container {
       text-align: center;
+    }
+
+    :deep(.album-cover-front) {
+      .--rounded-m();
     }
 
     // States

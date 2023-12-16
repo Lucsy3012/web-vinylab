@@ -46,6 +46,7 @@ export type Album = {
     sides: Side[];
     artists: Artist[];
     miscellaneousInformation?: EntryFieldTypes.Text;
+    filterValue?: string;
   };
 };
 
