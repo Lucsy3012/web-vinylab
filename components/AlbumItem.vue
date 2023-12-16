@@ -28,7 +28,7 @@ const lastSide = computed(() => {
 
 <template>
   <div class="album" :class="`album--${settings.display}`">
-    <AlbumCover :album="props.album" :size="120" :rotation="'teaser'" />
+    <AlbumCover :album="props.album" :size="350" :rotation="'teaser'" />
     <div class="album-title--container">
       <h2
         class="album-title --site-color"
@@ -43,7 +43,7 @@ const lastSide = computed(() => {
       <h3
         class="album-authors --site-color-50"
         :class="{
-          'eyebrow-1 mt1': settings.display === 'coverflow',
+          'eyebrow-1 mt1 text--upper': settings.display === 'coverflow',
           'eyebrow-1 mt1': settings.display === 'grid',
           tm: settings.display === 'list',
         }"
@@ -138,6 +138,91 @@ const lastSide = computed(() => {
       align-items: center;
       gap: 1em;
       margin-left: auto;
+    }
+  }
+
+  // Coverflow
+  &.album--coverflow {
+    --album-width: 350px;
+    --album-vinyl-stick-out: 0;
+    grid-column: 1;
+    grid-row: 1;
+    padding: 0;
+    background-color: unset;
+    opacity: 0;
+    scale: 0.5;
+    pointer-events: none;
+    .transit();
+
+    .album-title--container {
+      text-align: center;
+    }
+
+    // States
+    &.coverflow-active {
+      scale: 1;
+      opacity: 1;
+      z-index: 3;
+    }
+
+    &.coverflow-1 {
+      translate: -50% -2.5%;
+    }
+    &.coverflow\+1 {
+      translate: 50% -2.5%;
+    }
+    &.coverflow-2 {
+      translate: -90% -5%;
+    }
+    &.coverflow\+2 {
+      translate: 90% -5%;
+    }
+
+    &.coverflow-1,
+    &.coverflow\+1 {
+      scale: 0.78;
+      opacity: 1;
+      z-index: 2;
+
+      :deep(.album-cover-front) {
+        img,
+        &::before,
+        &::after {
+          opacity: 0.66;
+        }
+      }
+    }
+
+    &.coverflow-2,
+    &.coverflow\+2 {
+      scale: 0.57;
+      opacity: 1;
+      z-index: 1;
+
+      :deep(.album-cover-front) {
+        img,
+        &::before,
+        &::after {
+          opacity: 0.33;
+        }
+      }
+    }
+
+    &.coverflow-1,
+    &.coverflow\+1,
+    &.coverflow-2,
+    &.coverflow\+2 {
+      .album-title--container {
+        opacity: 0;
+      }
+    }
+
+    &.coverflow-active,
+    &.coverflow-1,
+    &.coverflow\+1,
+    &.coverflow-2,
+    &.coverflow\+2 {
+      pointer-events: initial;
     }
   }
 }

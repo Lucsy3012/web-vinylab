@@ -44,13 +44,16 @@ const sizeDouble = computed(() => {
 @import (reference) "../assets/less/global.less";
 
 .album-cover-front {
+  --transition-property: background;
   position: relative;
   box-shadow:
     1px 1px 2px var(--site-color-10),
     5px 0 5px -5px var(--site-color-50);
+  background-color: var(--site-accent);
   overflow: hidden;
   z-index: 2;
   .--rounded-xs();
+  .transit();
 
   img {
     width: var(--album-width, 120px);

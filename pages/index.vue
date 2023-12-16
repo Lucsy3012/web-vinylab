@@ -70,6 +70,9 @@ const selected = useSelected();
 function selectAlbum(album: Album) {
   selected.setAlbum(album);
 }
+
+// Coverflow specific
+const coverflowCount = ref(0);
 </script>
 
 <template>
@@ -86,12 +89,16 @@ function selectAlbum(album: Album) {
         </div>
       </div>
     </section>
-    <section>
+
+    <!-- Display Mode: Grid and List -->
+    <section v-if="settings.display !== 'coverflow'">
       <div class="stretch">
         <div class="row">
           <div class="col col-12">
-            <!-- Display: Grid -->
-            <div class="artist-list">
+            <div
+              class="artist-list"
+              :class="`artist-list--${settings.display}`"
+            >
               <!-- Each artist -->
               <div
                 class="artist-collection"
@@ -141,6 +148,34 @@ function selectAlbum(album: Album) {
       </div>
     </section>
 
+    <!-- Display Mode: Coverflow -->
+    <section class="coverflow" v-if="settings.display === 'coverflow'">
+      <div class="stretch">
+        <div class="row">
+          <div class="col col-12">
+            <div class="album-controller album-controller--coverflow">
+              <!-- Albums -->
+              <AlbumItem
+                v-for="(album, index) in collection.data.items as Album[]"
+                :album="album"
+                @click="coverflowCount = index"
+                @dblclick="selectAlbum(album)"
+                :key="album.sys.id"
+                :class="{
+                  selected: album.sys.id === selected?.album?.sys?.id,
+                  'coverflow-2': index === coverflowCount - 2,
+                  'coverflow-1': index === coverflowCount - 1,
+                  'coverflow-active': index === coverflowCount,
+                  'coverflow+1': index === coverflowCount + 1,
+                  'coverflow+2': index === coverflowCount + 2,
+                }"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Media Player -->
     <ClientOnly>
       <MediaPlayer
@@ -182,6 +217,26 @@ function selectAlbum(album: Album) {
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+
+  &.album-controller--coverflow {
+    // display: flex;
+    display: grid;
+    // flex-wrap: nowrap;
+    overflow-x: hidden;
+    grid-template-columns:
+      minmax(0, 2fr)
+      minmax(0, 3fr)
+      minmax(0, 4fr)
+      minmax(0, 3fr)
+      minmax(0, 2fr);
+    grid-template-columns: 350px;
+    // justify-content: flex-start;
+    justify-content: center;
+    align-items: center;
+    // max-width: 780px;
+    margin: auto;
+    // padding: 0 11.45%;
   }
 }
 
