@@ -39,4 +39,7 @@ export default {
       coverflow: "Coverflow",
     },
   },
+  experience: {
+    noAlbumSelected: "No album selected",
+  },
 };

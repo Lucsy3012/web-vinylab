@@ -219,6 +219,28 @@ watch(
         :key="selected.side?.sys?.id ?? 'default'"
       />
     </ClientOnly>
+
+    <!-- Experience Mode -->
+    <section
+      id="experience-mode"
+      :class="{ active: settings.mode === 'experience' }"
+    >
+      <ClientOnly>
+        <ExperienceMediaPlayer
+          v-if="selected.side?.sys?.id && settings.mode === 'experience'"
+          :key="`${selected.side?.sys?.id}-experience` ?? 'default'"
+        />
+      </ClientOnly>
+      <h2 v-if="!selected.side?.sys?.id" class="title-1 --site-accent">
+        {{ $t("experience.noAlbumSelected") }}
+      </h2>
+      <img
+        v-if="selected?.album"
+        class="background-image"
+        :src="selected.album.fields?.albumCoverFront?.fields?.file?.url"
+        :alt="selected.album.fields?.albumCoverFront?.fields?.title"
+      />
+    </section>
   </div>
 </template>
 
@@ -256,23 +278,12 @@ watch(
   }
 
   &.album-controller--coverflow {
-    // display: flex;
     display: grid;
-    // flex-wrap: nowrap;
     overflow-x: hidden;
-    grid-template-columns:
-      minmax(0, 2fr)
-      minmax(0, 3fr)
-      minmax(0, 4fr)
-      minmax(0, 3fr)
-      minmax(0, 2fr);
     grid-template-columns: 350px;
-    // justify-content: flex-start;
     justify-content: center;
     align-items: center;
-    // max-width: 780px;
     margin: auto;
-    // padding: 0 11.45%;
   }
 }
 
@@ -280,5 +291,41 @@ watch(
   background-color: var(--site-contrast-33);
   padding: 3em 2em;
   .--rounded-l();
+}
+
+#experience-mode {
+  --transition-duration: 1s;
+  --transition-timing-function: var(--bezier-slow-in-fast-out);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  background-color: var(--btn-background-color);
+  z-index: 11;
+  contain: layout;
+  .transit();
+
+  &.active {
+    pointer-events: all;
+    opacity: 1;
+  }
+
+  .background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: blur(5px);
+    opacity: 0.025;
+    z-index: -1;
+  }
 }
 </style>

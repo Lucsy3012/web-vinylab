@@ -47,6 +47,17 @@ function switchMode(mode: "explore" | "experience") {
   setActiveIndicatorPosition();
 }
 
+// Updates
+onUpdated(() => {
+  // Change color & settings
+  if (settings.mode) {
+    document.documentElement.classList.toggle(
+      "mode--experience",
+      settings.mode === "experience",
+    );
+  }
+});
+
 // Logout
 const localePath = useLocalePath();
 const { auth } = useSupabaseClient();
@@ -66,7 +77,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <header class="header">
+  <header class="header" :class="`mode--${settings.mode}`">
     <section>
       <div class="stretch">
         <div class="row">
@@ -129,6 +140,14 @@ onMounted(() => {
 <style lang="less" scoped>
 @import (reference) "../assets/less/global.less";
 
+header {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 12;
+}
+
 .header--container {
   display: flex;
   gap: 2em;
@@ -169,10 +188,13 @@ onMounted(() => {
   }
 }
 .header--logo {
+  --transition-duration: 1s;
+  --transition-timing-function: var(--bezier-slow-in-fast-out);
   position: absolute;
   top: 50%;
   left: 50%;
   translate: -50% -50%;
+  .transit();
 }
 .header--actions {
   display: flex;
@@ -198,6 +220,23 @@ onMounted(() => {
 
     :deep(svg) {
       display: block;
+    }
+  }
+}
+
+// Experience Mode
+.mode--experience {
+  .header--logo {
+    translate: -50% -130px;
+  }
+  .header--navigation {
+    .btn.btn--mode {
+      color: var(--site-contrast-75);
+
+      &:hover,
+      &.active {
+        color: var(--site-contrast);
+      }
     }
   }
 }

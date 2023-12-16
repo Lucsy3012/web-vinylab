@@ -208,7 +208,7 @@ const albumVinylRotation = computed(
                     />
                   </div>
                 </div>
-                <audio ref="currentAudioFile" controls></audio>
+                <audio ref="currentAudioFile" controls />
 
                 <!-- Display time -->
                 <MediaPlayerDuration :mediaControls="mediaControls" />
