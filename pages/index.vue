@@ -90,7 +90,13 @@ const coverflowCount = ref(0);
 // Filter
 const filter = useFilter();
 const filteredAlbumsByArtist = ref(collection.sortedByArtists);
-const filteredAlbums = ref(filteredAlbumsByArtist.value);
+const filteredAlbums = ref(
+  filteredAlbumsByArtist.value
+    .map((artist: AlbumByArtist) => {
+      return artist.albums;
+    })
+    .flat(),
+);
 
 watch(
   () => settings.filter,
