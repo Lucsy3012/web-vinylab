@@ -155,6 +155,7 @@ const lastSide = computed(() => {
 
     .album-title--container {
       text-align: center;
+      opacity: 0;
     }
 
     :deep(.album-cover-front) {
@@ -166,19 +167,35 @@ const lastSide = computed(() => {
       scale: 1;
       opacity: 1;
       z-index: 3;
+
+      .album-title--container {
+        opacity: 1;
+      }
     }
 
     &.coverflow-1 {
       translate: -50% -2.5%;
+      transform: perspective(500px) rotate3d(0, 1, 0, 10deg);
     }
     &.coverflow\+1 {
       translate: 50% -2.5%;
+      transform: perspective(500px) rotate3d(0, 1, 0, -10deg);
     }
     &.coverflow-2 {
       translate: -90% -5%;
+      transform: perspective(500px) rotate3d(0, 1, 0, 15deg);
     }
     &.coverflow\+2 {
       translate: 90% -5%;
+      transform: perspective(500px) rotate3d(0, 1, 0, -15deg);
+    }
+    &.coverflow-3 {
+      translate: -120% -7%;
+      transform: perspective(500px) rotate3d(0, 1, 0, 20deg);
+    }
+    &.coverflow\+3 {
+      translate: 120% -7%;
+      transform: perspective(500px) rotate3d(0, 1, 0, -20deg);
     }
 
     &.coverflow-1,
@@ -211,12 +228,18 @@ const lastSide = computed(() => {
       }
     }
 
-    &.coverflow-1,
-    &.coverflow\+1,
-    &.coverflow-2,
-    &.coverflow\+2 {
-      .album-title--container {
-        opacity: 0;
+    &.coverflow-3,
+    &.coverflow\+3 {
+      scale: 0.33;
+      opacity: 0;
+      z-index: 0;
+
+      :deep(.album-cover-front) {
+        img,
+        &::before,
+        &::after {
+          opacity: 0.1;
+        }
       }
     }
 

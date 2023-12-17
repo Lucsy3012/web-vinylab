@@ -86,6 +86,19 @@ function selectAlbum(album: Album) {
 
 // Coverflow specific
 const coverflowCount = ref(0);
+function coverflowScroll(event: WheelEvent) {
+  if (event.deltaY > 0) {
+    if (coverflowCount.value >= filteredAlbums.value.length - 1) {
+      return;
+    }
+    coverflowCount.value++;
+  } else {
+    if (coverflowCount.value <= 0) {
+      return;
+    }
+    coverflowCount.value--;
+  }
+}
 
 // Filter
 const filter = useFilter();
@@ -195,7 +208,10 @@ watch(
       <div class="stretch">
         <div class="row">
           <div class="col col-12">
-            <div class="album-controller album-controller--coverflow">
+            <div
+              class="album-controller album-controller--coverflow"
+              @wheel="coverflowScroll"
+            >
               <!-- Albums -->
               <AlbumItem
                 v-for="(album, index) in filteredAlbums as Album[]"
@@ -205,11 +221,13 @@ watch(
                 :key="album.sys.id"
                 :class="{
                   selected: album.sys.id === selected?.album?.sys?.id,
+                  'coverflow-3': index < coverflowCount - 2,
                   'coverflow-2': index === coverflowCount - 2,
                   'coverflow-1': index === coverflowCount - 1,
                   'coverflow-active': index === coverflowCount,
                   'coverflow+1': index === coverflowCount + 1,
                   'coverflow+2': index === coverflowCount + 2,
+                  'coverflow+3': index > coverflowCount + 2,
                 }"
               />
             </div>
